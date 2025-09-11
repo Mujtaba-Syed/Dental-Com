@@ -19,24 +19,24 @@ function valid_datas( f ){
 		 jQuery.ajax({
 			url: 'mail.php',
 			type: 'post',
-			data: jQuery('form#fruitkha-contact').serialize(),
+			data: jQuery('form#DentalCom-contact').serialize(),
 			complete: function(data) {
 				jQuery('#form_status').html(data.responseText);
-				jQuery('#fruitkha-contact').find('input,textarea').attr({value:''});
-				jQuery('#fruitkha-contact').css({opacity:1});
-				jQuery('#fruitkha-contact').remove();
+				jQuery('#DentalCom-contact').find('input,textarea').attr({value:''});
+				jQuery('#DentalCom-contact').css({opacity:1});
+				jQuery('#DentalCom-contact').remove();
 			}
 		});
 		jQuery('#form_status').html('<span class="loading">Sending your message...</span>');
-		jQuery('#fruitkha-contact').animate({opacity:0.3});
-		jQuery('#fruitkha-contact').find('input,textarea,button').css('border','none').attr({'disabled':''});
+		jQuery('#DentalCom-contact').animate({opacity:0.3});
+		jQuery('#DentalCom-contact').find('input,textarea,button').css('border','none').attr({'disabled':''});
 	}
 	
 	return false;
 }
 
 function notice( f ){
-	jQuery('#fruitkha-contact').find('input,textarea').css('border','none');
+	jQuery('#DentalCom-contact').find('input,textarea').css('border','none');
 	f.style.border = '1px solid red';
 	f.focus();
 }
