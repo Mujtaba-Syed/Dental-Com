@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+	<meta name="description" content="Professional dental care services - DentalCom provides comprehensive dental treatments, cosmetic dentistry, and oral health solutions for the whole family.">
 
 	<!-- title -->
 	<title>DentalCom - Slider Version</title>
@@ -53,11 +53,11 @@
 					<div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh & Organic</p>
-								<h1>Delicious Seasonal Fruits</h1>
+								<p class="subtitle">Professional & Caring	</p>
+								<h1>Your Smile is Our Priority</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Fruit Collection</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
+									<a href="{% url 'frontend:shop' %}" class="boxed-btn">Our Services</a>
+									<a href="{% url 'frontend:contact' %}" class="bordered-btn">Book Appointment</a>
 								</div>
 							</div>
 						</div>
@@ -72,11 +72,11 @@
 					<div class="col-lg-10 offset-lg-1 text-center">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh Everyday</p>
-								<h1>100% Organic Collection</h1>
+								<p class="subtitle">Professional & Caring</p>
+								<h1>Your Smile is Our Priority</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Visit Shop</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
+									<a href="{% url 'frontend:shop' %}" class="boxed-btn">Our Services</a>
+									<a href="{% url 'frontend:contact' %}" class="bordered-btn">Book Appointment</a>
 								</div>
 							</div>
 						</div>
@@ -91,11 +91,11 @@
 					<div class="col-lg-10 offset-lg-1 text-right">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Mega Sale Going On!</p>
-								<h1>Get December Discount</h1>
+								<p class="subtitle">Professional & Caring</p>
+								<h1>Your Smile is Our Priority</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Visit Shop</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
+									<a href="{% url 'frontend:shop' %}" class="boxed-btn">Our Services</a>
+									<a href="{% url 'frontend:contact' %}" class="bordered-btn">Book Appointment</a>
 								</div>
 							</div>
 						</div>
@@ -312,7 +312,7 @@
     	<div class="container">
         	<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
             <div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-            <a href="shop.html" class="cart-btn btn-lg">Shop Now</a>
+            <a href="{% url 'frontend:shop' %}" class="cart-btn btn-lg">Shop Now</a>
         </div>
     </section>
 	<!-- end shop banner -->
