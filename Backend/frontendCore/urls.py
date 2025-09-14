@@ -29,4 +29,8 @@ urlpatterns = [
     
     # Error pages
     path('404/', views.Error404View.as_view(), name='error_404'),
+    
+    # Appointment pages
+    path('appointment/', views.AppointmentView.as_view(), name='appointment'),
+    path('book-appointment/', views.book_appointment, name='book_appointment'),
 ]

@@ -1,0 +1,855 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>Book Appointment - Dental Clinic</title>
+
+	<!-- favicon -->
+	<link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+	<!-- animate css -->
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="{% static 'css/meanmenu.min.css' %}">
+	<!-- main style -->
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+	
+	<!-- custom appointment styles -->
+	<style>
+		.appointment-section {
+			padding: 80px 0;
+			background-color: #f8f9fa;
+		}
+		
+		.appointment-form {
+			background: white;
+			padding: 40px;
+			border-radius: 10px;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+		
+		.appointment-form h2 {
+			color: #333;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+		
+		.appointment-form p {
+			color: #666;
+			margin-bottom: 30px;
+			text-align: center;
+		}
+		
+		.form-group label {
+			font-weight: 600;
+			color: #333;
+			margin-bottom: 8px;
+		}
+		
+		.form-control {
+			border: 2px solid #e9ecef;
+			border-radius: 5px;
+			padding: 12px 15px;
+			font-size: 14px;
+			transition: border-color 0.3s ease;
+		}
+		
+		.form-control:focus {
+			border-color: #007bff;
+			box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+		}
+		
+		.btn-primary {
+			background-color: #007bff;
+			border-color: #007bff;
+			padding: 12px 40px;
+			font-size: 16px;
+			font-weight: 600;
+			border-radius: 5px;
+			transition: all 0.3s ease;
+		}
+		
+		.btn-primary:hover {
+			background-color: #0056b3;
+			border-color: #0056b3;
+			transform: translateY(-2px);
+		}
+		
+		.contact-info-section {
+			padding: 60px 0;
+			background-color: #333;
+			color: white;
+		}
+		
+		.contact-info-item {
+			text-align: center;
+			padding: 20px;
+		}
+		
+		.ci-icon {
+			font-size: 40px;
+			color: #007bff;
+			margin-bottom: 20px;
+		}
+		
+		.ci-text h4 {
+			color: white;
+			margin-bottom: 15px;
+		}
+		
+		.ci-text p {
+			color: #ccc;
+			margin: 0;
+		}
+		
+		.form-check-label a {
+			color: #007bff;
+			text-decoration: none;
+		}
+		
+		.form-check-label a:hover {
+			text-decoration: underline;
+		}
+		
+		.modal-content {
+			border-radius: 10px;
+		}
+		
+		.modal-header {
+			background-color: #f8f9fa;
+			border-bottom: 1px solid #dee2e6;
+		}
+		
+		.modal-title {
+			color: #333;
+			font-weight: 600;
+		}
+		
+		/* Form selection feedback */
+		.form-control:focus {
+			border-color: #007bff;
+			box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+		}
+		
+		.form-control option:checked {
+			background-color: #007bff;
+			color: white;
+		}
+		
+		/* Selected option styling */
+		select.form-control option:checked {
+			background-color: #007bff;
+			color: white;
+		}
+		
+		/* Visual feedback for selections */
+		.form-control.is-valid {
+			border-color: #28a745;
+			background-color: #f8fff9;
+		}
+		
+		.form-control.is-invalid {
+			border-color: #dc3545;
+			background-color: #fff8f8;
+		}
+		
+		/* Enhanced visual feedback for selected dropdowns */
+		select.form-control.is-valid {
+			border-color: #28a745;
+			background-color: #f8fff9;
+			background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.94-.94 1.89 1.89 3.78-3.78.94.94-4.72 4.72z'/%3e%3c/svg%3e");
+			background-repeat: no-repeat;
+			background-position: right 12px center;
+			background-size: 16px;
+			padding-right: 40px;
+		}
+		
+		/* Show selected value more prominently */
+		select.form-control:not([value=""]) {
+			font-weight: 600;
+			color: #2c5530;
+		}
+		
+		/* Force selected option to be visible */
+		select.form-control option:checked {
+			background-color: #007bff !important;
+			color: white !important;
+			font-weight: 600;
+		}
+		
+		/* Ensure the selected value shows in the field */
+		select.form-control {
+			background-color: white;
+		}
+		
+		select.form-control:focus {
+			background-color: white;
+		}
+		
+		/* Selection indicators */
+		.text-success {
+			color: #28a745 !important;
+			font-size: 0.875rem;
+			margin-top: 5px;
+			display: block;
+		}
+		
+		.font-weight-bold {
+			font-weight: 600 !important;
+		}
+		
+		/* Ensure indicators don't break layout */
+		.form-group {
+			position: relative;
+		}
+		
+		small.text-success {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			z-index: 10;
+			background: white;
+			padding: 2px 8px;
+			border-radius: 4px;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+			border: 1px solid #28a745;
+		}
+		
+		/* Custom dropdown display overlay */
+		.select-wrapper {
+			position: relative;
+		}
+		
+		.select-display {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 30px;
+			height: 100%;
+			display: none;
+			align-items: center;
+			padding: 12px 15px;
+			pointer-events: none;
+			z-index: 5;
+			font-size: 14px;
+			color: #2c5530;
+			font-weight: 600;
+			background-color: white;
+			border-radius: 5px;
+		}
+		
+		select.form-control {
+			position: relative;
+			z-index: 10;
+		}
+		
+		/* Show display overlay only when select is not focused */
+		.select-wrapper:not(:focus-within) .select-display {
+			display: flex;
+		}
+		
+		/* Hide the default text when custom display is shown and select is not focused */
+		.select-wrapper:not(:focus-within) select.form-control.has-custom-display {
+			color: transparent !important;
+		}
+		
+		/* Show normal text when focused */
+		.select-wrapper:focus-within select.form-control {
+			color: #495057 !important;
+		}
+		
+		/* Alert styling improvements */
+		.alert {
+			margin-bottom: 20px;
+		}
+		
+		.btn-close {
+			background: none;
+			border: none;
+			font-size: 1.5rem;
+			cursor: pointer;
+		}
+	</style>
+
+</head>
+<body>
+	
+	<!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+	
+	{% include 'Includes/navbar.html' %}
+	
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Book your appointment</p>
+						<h1>Book Appointment</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- appointment section -->
+	<div class="appointment-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2">
+					<div class="appointment-form">
+						<h2>Book Your Appointment</h2>
+						<p>Fill out the form below to schedule your dental appointment. We'll get back to you within 24 hours to confirm your booking.</p>
+						
+						<form id="appointmentForm" method="post" action="{% url 'frontend:book_appointment' %}">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="firstName">First Name *</label>
+										<input type="text" class="form-control" id="firstName" name="first_name" required>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="lastName">Last Name *</label>
+										<input type="text" class="form-control" id="lastName" name="last_name" required>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="email">Email Address *</label>
+										<input type="email" class="form-control" id="email" name="email" required>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="phone">Phone Number *</label>
+										<input type="tel" class="form-control" id="phone" name="phone" required>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="appointmentDate">Preferred Date *</label>
+										<input type="date" class="form-control" id="appointmentDate" name="appointment_date" required>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="appointmentTime">Preferred Time *</label>
+										<div class="select-wrapper">
+											<select class="form-control" id="appointmentTime" name="appointment_time" required>
+												<option value="">Select Time</option>
+												<option value="09:00">9:00 AM</option>
+												<option value="09:30">9:30 AM</option>
+												<option value="10:00">10:00 AM</option>
+												<option value="10:30">10:30 AM</option>
+												<option value="11:00">11:00 AM</option>
+												<option value="11:30">11:30 AM</option>
+												<option value="12:00">12:00 PM</option>
+												<option value="14:00">2:00 PM</option>
+												<option value="14:30">2:30 PM</option>
+												<option value="15:00">3:00 PM</option>
+												<option value="15:30">3:30 PM</option>
+												<option value="16:00">4:00 PM</option>
+												<option value="16:30">4:30 PM</option>
+												<option value="17:00">5:00 PM</option>
+											</select>
+											<div class="select-display" id="appointmentTime_display"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="service">Service Required *</label>
+								<div class="select-wrapper">
+									<select class="form-control" id="service" name="service" required>
+										<option value="">Select Service</option>
+										<option value="general_checkup">General Checkup</option>
+										<option value="cleaning">Teeth Cleaning</option>
+										<option value="filling">Dental Filling</option>
+										<option value="extraction">Tooth Extraction</option>
+										<option value="crown">Dental Crown</option>
+										<option value="root_canal">Root Canal Treatment</option>
+										<option value="orthodontics">Orthodontics Consultation</option>
+										<option value="cosmetic">Cosmetic Dentistry</option>
+										<option value="emergency">Emergency Treatment</option>
+										<option value="other">Other</option>
+									</select>
+									<div class="select-display" id="service_display"></div>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="message">Additional Information</label>
+								<textarea class="form-control" id="message" name="message" rows="4" placeholder="Please provide any additional information about your dental needs or concerns..."></textarea>
+							</div>
+							
+							<div class="form-group">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+									<label class="form-check-label" for="terms">
+										I agree to the <a href="#" data-toggle="modal" data-target="#termsModal">Terms and Conditions</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">Privacy Policy</a> *
+									</label>
+								</div>
+							</div>
+							
+							<div class="text-center">
+								<button type="submit" class="btn btn-primary btn-lg">Book Appointment</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end appointment section -->
+
+	<!-- contact info section -->
+	<div class="contact-info-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4">
+					<div class="contact-info-item">
+						<div class="ci-icon">
+							<i class="fas fa-map-marker-alt"></i>
+						</div>
+						<div class="ci-text">
+							<h4>Address</h4>
+							<p>123 Dental Street<br>Health City, HC 12345</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="contact-info-item">
+						<div class="ci-icon">
+							<i class="fas fa-phone"></i>
+						</div>
+						<div class="ci-text">
+							<h4>Phone</h4>
+							<p>+1 (555) 123-4567<br>+1 (555) 123-4568</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="contact-info-item">
+						<div class="ci-icon">
+							<i class="fas fa-envelope"></i>
+						</div>
+						<div class="ci-text">
+							<h4>Email</h4>
+							<p>info@dentalclinic.com<br>appointments@dentalclinic.com</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end contact info section -->
+
+	<!-- Terms and Conditions Modal -->
+	<div class="modal fade" id="termsModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Terms and Conditions</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h6>Appointment Booking</h6>
+					<p>By booking an appointment, you agree to:</p>
+					<ul>
+						<li>Arrive on time for your scheduled appointment</li>
+						<li>Provide 24-hour notice for any cancellations or rescheduling</li>
+						<li>Provide accurate personal and medical information</li>
+						<li>Follow all clinic policies and procedures</li>
+					</ul>
+					<h6>Cancellation Policy</h6>
+					<p>Appointments cancelled with less than 24 hours notice may be subject to a cancellation fee.</p>
+					<h6>Privacy</h6>
+					<p>Your personal information will be kept confidential and used only for appointment scheduling and dental care purposes.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Privacy Policy Modal -->
+	<div class="modal fade" id="privacyModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Privacy Policy</h5>
+					<button type="button" class="close" data-dismiss="modal">
+						<span>&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h6>Information We Collect</h6>
+					<p>We collect personal information that you provide when booking appointments, including:</p>
+					<ul>
+						<li>Name and contact information</li>
+						<li>Appointment preferences</li>
+						<li>Medical information relevant to your dental care</li>
+					</ul>
+					<h6>How We Use Your Information</h6>
+					<p>Your information is used to:</p>
+					<ul>
+						<li>Schedule and manage your appointments</li>
+						<li>Provide dental care services</li>
+						<li>Send appointment reminders</li>
+						<li>Improve our services</li>
+					</ul>
+					<h6>Data Protection</h6>
+					<p>We implement appropriate security measures to protect your personal information and comply with all applicable privacy laws.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- footer -->
+	{% include 'Includes/footer.html' %}
+
+	
+	<!-- jquery -->
+	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+	<!-- bootstrap -->
+	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	<!-- count down -->
+	<script src="{% static 'js/jquery.countdown.js' %}"></script>
+	<!-- isotope -->
+	<script src="{% static 'js/jquery.isotope-3.0.6.min.js' %}"></script>
+	<!-- waypoints -->
+	<script src="{% static 'js/waypoints.js' %}"></script>
+	<!-- owl carousel -->
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<!-- magnific popup -->
+	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+	<!-- mean menu -->
+	<script src="{% static 'js/jquery.meanmenu.min.js' %}"></script>
+	<!-- sticker js -->
+	<script src="{% static 'js/sticker.js' %}"></script>
+	<!-- main js -->
+	<script src="{% static 'js/main.js' %}"></script>
+	
+	<!-- appointment form validation -->
+	<script>
+		$(document).ready(function() {
+			// Set minimum date to today
+			var today = new Date().toISOString().split('T')[0];
+			$('#appointmentDate').attr('min', today);
+			
+			// Initialize form state - show any pre-selected values
+			function initializeFormState() {
+				$('#appointmentTime, #service').each(function() {
+					var $this = $(this);
+					var selectedValue = $this.val();
+					var selectedText = $this.find('option:selected').text();
+					var fieldId = $this.attr('id');
+					var displayId = fieldId + '_display';
+					
+					console.log('Initializing field:', fieldId, 'Value:', selectedValue, 'Text:', selectedText);
+					
+					if (selectedValue && selectedValue !== '') {
+						$this.addClass('is-valid');
+						$this.addClass('has-custom-display');
+						$this.attr('title', 'Selected: ' + selectedText);
+						
+						// Update the custom display overlay with a small delay
+						setTimeout(function() {
+							$('#' + displayId).text(selectedText).show();
+							console.log('Initialized display for', fieldId, 'with text:', selectedText);
+						}, 10);
+						
+						// Add indicator
+						var indicatorId = fieldId + '_indicator';
+						$('#' + indicatorId).remove(); // Remove existing
+						$this.closest('.form-group').append('<small id="' + indicatorId + '" class="text-success font-weight-bold">✓ ' + selectedText + '</small>');
+					}
+				});
+			}
+			
+			// Initialize on page load
+			initializeFormState();
+			
+			// Form validation
+			$('#appointmentForm').on('submit', function(e) {
+				e.preventDefault();
+				
+				var isValid = true;
+				var errorMessage = '';
+				
+				// Clear previous error styling
+				$('.form-control').removeClass('is-invalid');
+				$('.error-message').remove();
+				
+				// Validate required fields
+				$('input[required], select[required], textarea[required]').each(function() {
+					if ($(this).val() === '') {
+						$(this).addClass('is-invalid');
+						isValid = false;
+					}
+				});
+				
+				// Validate email format
+				var email = $('#email').val();
+				var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				if (email && !emailRegex.test(email)) {
+					$('#email').addClass('is-invalid');
+					$('#email').after('<div class="error-message text-danger small mt-1">Please enter a valid email address</div>');
+					isValid = false;
+				}
+				
+				// Validate phone format (basic validation)
+				var phone = $('#phone').val();
+				var phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+				if (phone && !phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''))) {
+					$('#phone').addClass('is-invalid');
+					$('#phone').after('<div class="error-message text-danger small mt-1">Please enter a valid phone number</div>');
+					isValid = false;
+				}
+				
+				// Validate appointment date (not in the past)
+				var appointmentDate = $('#appointmentDate').val();
+				if (appointmentDate && new Date(appointmentDate) < new Date()) {
+					$('#appointmentDate').addClass('is-invalid');
+					$('#appointmentDate').after('<div class="error-message text-danger small mt-1">Please select a future date</div>');
+					isValid = false;
+				}
+				
+				// Validate terms checkbox
+				if (!$('#terms').is(':checked')) {
+					$('#terms').addClass('is-invalid');
+					$('#terms').closest('.form-group').append('<div class="error-message text-danger small mt-1">You must agree to the terms and conditions</div>');
+					isValid = false;
+				}
+				
+				if (isValid) {
+					// Get form data
+					var formData = {
+						'first_name': $('#firstName').val(),
+						'last_name': $('#lastName').val(),
+						'email': $('#email').val(),
+						'phone': $('#phone').val(),
+						'appointment_date': $('#appointmentDate').val(),
+						'appointment_time': $('#appointmentTime').val(),
+						'service': $('#service').val(),
+						'message': $('#message').val(),
+						'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
+					};
+					
+					// Debug: Log form data to console
+					console.log('Form data being submitted:', formData);
+					
+					// Show loading state
+					$('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Submitting...');
+					
+					// Clear any existing alerts
+					$('.alert').remove();
+					
+					$.ajax({
+						url: '{% url "frontend:book_appointment" %}',
+						type: 'POST',
+						data: formData,
+						success: function(response) {
+							console.log('Server response:', response);
+							if (response.success) {
+								// Show success message above the form instead of replacing it
+								$('#appointmentForm').prepend(`
+									<div class="alert alert-success alert-dismissible fade show" role="alert">
+										<h4><i class="fas fa-check-circle"></i> Appointment Request Submitted!</h4>
+										<p>${response.message}</p>
+										<p>If you need immediate assistance, please call us at <strong>+1 (555) 123-4567</strong></p>
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								`);
+								
+								// Reset form
+								$('#appointmentForm')[0].reset();
+								$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
+								
+								// Scroll to top to show success message
+								$('html, body').animate({ scrollTop: 0 }, 500);
+							} else {
+								// Show error message
+								$('#appointmentForm').prepend(`
+									<div class="alert alert-danger alert-dismissible fade show" role="alert">
+										<strong>Error:</strong> ${response.message}
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								`);
+								$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
+							}
+						},
+						error: function(xhr, status, error) {
+							console.log('AJAX Error:', xhr.responseText);
+							// Show error message
+							$('#appointmentForm').prepend(`
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									<strong>Error:</strong> Unable to submit appointment request. Please try again or call us directly.
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							`);
+							$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
+						}
+					});
+				} else {
+					// Show error message
+					$('#appointmentForm').prepend(`
+						<div class="alert alert-danger">
+							<strong>Please correct the following errors:</strong>
+							<ul class="mb-0 mt-2">
+								<li>Please fill in all required fields</li>
+								<li>Check that your email and phone number are valid</li>
+								<li>Select a future date for your appointment</li>
+								<li>Agree to the terms and conditions</li>
+							</ul>
+						</div>
+					`);
+				}
+			});
+			
+			// Real-time validation
+			$('input, select, textarea').on('blur', function() {
+				$(this).removeClass('is-invalid');
+				$(this).next('.error-message').remove();
+			});
+			
+			// Phone number formatting
+			$('#phone').on('input', function() {
+				var value = $(this).val().replace(/\D/g, '');
+				if (value.length >= 10) {
+					value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+				}
+				$(this).val(value);
+			});
+			
+			// Visual feedback for form selections
+			$('#appointmentTime, #service').on('change', function() {
+				var $this = $(this);
+				var selectedValue = $this.val();
+				var selectedText = $this.find('option:selected').text();
+				var fieldId = $this.attr('id');
+				var displayId = fieldId + '_display';
+				
+				console.log('Field changed:', fieldId, 'Value:', selectedValue, 'Text:', selectedText);
+				
+				if (selectedValue) {
+					$this.removeClass('is-invalid').addClass('is-valid');
+					$this.addClass('has-custom-display');
+					console.log('Selected ' + $this.attr('name') + ':', selectedValue, '(' + selectedText + ')');
+					
+					// Add a visual indicator
+					$this.attr('title', 'Selected: ' + selectedText);
+					
+					// Update the custom display overlay
+					$('#' + displayId).text(selectedText);
+					
+					// Add a small indicator next to the field
+					var indicatorId = fieldId + '_indicator';
+					
+					// Remove existing indicator
+					$('#' + indicatorId).remove();
+					
+					// Add new indicator
+					$this.closest('.form-group').append('<small id="' + indicatorId + '" class="text-success font-weight-bold">✓ ' + selectedText + '</small>');
+				} else {
+					$this.removeClass('is-valid').addClass('is-invalid');
+					$this.removeClass('has-custom-display');
+					$this.removeAttr('title');
+					
+					// Clear the custom display
+					$('#' + displayId).text('');
+					
+					// Remove indicator
+					$('#' + fieldId + '_indicator').remove();
+				}
+			});
+			
+			// Handle focus and blur events for better dropdown visibility
+			$('#appointmentTime, #service').on('focus', function() {
+				var $this = $(this);
+				var fieldId = $this.attr('id');
+				var displayId = fieldId + '_display';
+				
+				// Hide the custom display when focused so dropdown is visible
+				$('#' + displayId).hide();
+			});
+			
+			$('#appointmentTime, #service').on('blur', function() {
+				var $this = $(this);
+				var fieldId = $this.attr('id');
+				var displayId = fieldId + '_display';
+				var selectedValue = $this.val();
+				
+				// Show the custom display when not focused and has a value
+				if (selectedValue) {
+					$('#' + displayId).show();
+				}
+			});
+			
+			// Visual feedback for date selection
+			$('#appointmentDate').on('change', function() {
+				var $this = $(this);
+				var selectedDate = $this.val();
+				
+				if (selectedDate) {
+					$this.removeClass('is-invalid').addClass('is-valid');
+					console.log('Selected date:', selectedDate);
+				} else {
+					$this.removeClass('is-valid').addClass('is-invalid');
+				}
+			});
+			
+			// Show current selections in console for debugging
+			$('select, input[type="date"]').on('change', function() {
+				console.log('Form field changed:', {
+					field: $(this).attr('name'),
+					value: $(this).val(),
+					text: $(this).find('option:selected').text()
+				});
+			});
+		});
+	</script>
+
+</body>
+</html>
