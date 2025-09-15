@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django_filters',
     'frontendCore',
     'Product',
-    'Service'
+    'Service',
+    'Blog'
 ]
 
 MIDDLEWARE = [

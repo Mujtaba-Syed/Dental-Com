@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('frontendCore.urls')),
     path('api/', include('Product.urls')),
     path('api/', include('Service.urls')),
+    path('api/blog/', include('Blog.urls')),
 ]
 
 # Serve media files in development
