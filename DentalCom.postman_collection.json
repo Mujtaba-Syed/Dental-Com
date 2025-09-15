@@ -351,6 +351,190 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Add a reviews",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"product_id\": 1,\r\n    \"rating\": 5,\r\n    \"title\": \"Excellent dental product!\",\r\n    \"comment\": \"This product exceeded my expectations. The quality is outstanding and it works exactly as described. Highly recommended for anyone looking for reliable dental care.\",\r\n    \"is_verified_purchase\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/products/1/reviews/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"products",
+								"1",
+								"reviews",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all reviews of a product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test user\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"product_id\": 1,\r\n    \"rating\": 5,\r\n    \"title\": \"Excellent dental product!\",\r\n    \"comment\": \"This product exceeded my expectations. The quality is outstanding and it works exactly as described. Highly recommended for anyone looking for reliable dental care.\",\r\n    \"is_verified_purchase\": true\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/products/1/reviews/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"products",
+								"1",
+								"reviews",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrive a specific review",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test user\",\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"product_id\": 1,\r\n    \"rating\": 5,\r\n    \"title\": \"Excellent dental product!\",\r\n    \"comment\": \"This product exceeded my expectations. The quality is outstanding and it works exactly as described. Highly recommended for anyone looking for reliable dental care.\",\r\n    \"is_verified_purchase\": true\r\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/products/1/reviews/1/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"products",
+								"1",
+								"reviews",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test user\",\r\n    \"email\": \"Paul11@hotmail.com\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/products/1/reviews/1/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"products",
+								"1",
+								"reviews",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update a review",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"test user\",\r\n    \"email\": \"Paul11@hotmail.com\",\r\n    \"rating\": 4,\r\n    \"title\": \"Updated review title\",\r\n    \"comment\": \"This is my updated review comment with more details about the product experience.\",\r\n    \"is_verified_purchase\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/products/1/reviews/1/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"products",
+								"1",
+								"reviews",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

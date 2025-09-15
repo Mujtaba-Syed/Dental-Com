@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'frontendCore',
     'Product',
     'Service',
-    'Blog'
+    'Blog',
+    'Review'
 ]
 
 MIDDLEWARE = [
