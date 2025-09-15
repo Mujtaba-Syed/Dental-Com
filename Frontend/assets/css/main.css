@@ -2830,3 +2830,77 @@ table.order-details tbody td {
   font-size: 18px;
   color: #666;
 }
+
+/* Service Images Grid */
+.service-images-grid {
+  margin-bottom: 30px;
+}
+
+.service-image-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-image-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.service-grid-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.service-image-item:hover .service-grid-image {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Service content styling */
+.service-content {
+  padding-left: 20px;
+}
+
+.service-content h4 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.service-content h5 {
+  color: #555;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.service-features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service-features li {
+  padding: 8px 0;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.service-features li i {
+  color: #28a745;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.service-actions {
+  margin-top: 30px;
+}
+
+.service-actions .boxed-btn {
+  margin-right: 15px;
+  margin-bottom: 10px;
+}

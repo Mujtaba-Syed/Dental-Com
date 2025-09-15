@@ -33,4 +33,8 @@ urlpatterns = [
     # Appointment pages
     path('appointment/', views.AppointmentView.as_view(), name='appointment'),
     path('book-appointment/', views.book_appointment, name='book_appointment'),
+    
+    # Service pages
+    path('services/', views.ServiceView.as_view(), name='services'),
+    path('service/<int:service_id>/', views.SingleServiceView.as_view(), name='single_service'),
 ]

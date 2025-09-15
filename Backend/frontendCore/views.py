@@ -17,12 +17,38 @@ class HomeView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Get active products for the home page with their primary images
-        from Product.serializers import ProductListSerializer
-        products = Product.objects.filter(is_active=True).prefetch_related('images').order_by('-created_at')[:3]
-        # Serialize the products to match API format
-        serializer = ProductListSerializer(products, many=True)
-        context['products'] = serializer.data
+        # Get active services for the home page
+        from Service.models import Service
+        services = Service.objects.filter(is_active=True).prefetch_related('images').order_by('-created_at')[:3]
+        # Convert to list of dictionaries to match API format
+        context['services'] = [
+            {
+                'id': service.id,
+                'name': service.name,
+                'slug': service.slug,
+                'description': service.description,
+                'meta_description': service.meta_description,
+                'image': {
+                    'image': service.images.first().image.url if service.images.exists() else None,
+                    'alt_text': service.images.first().alt_text if service.images.exists() else service.name
+                },
+                'images': [
+                    {
+                        'id': img.id,
+                        'image': img.image.url,
+                        'alt_text': img.alt_text or service.name,
+                        'order': img.order
+                    }
+                    for img in service.images.all().order_by('order')
+                ],
+                'category': 'dental_services',
+                'is_active': service.is_active,
+                'is_featured': service.is_featured,
+                'is_new': service.is_new,
+                'created_at': service.created_at.isoformat()
+            }
+            for service in services
+        ]
         return context
 
 class Home2View(TemplateView):
@@ -88,6 +114,59 @@ def mail_handler(request):
 class AppointmentView(TemplateView):
     """Appointment page view"""
     template_name = 'appointment.html'
+
+class ServiceView(TemplateView):
+    """Service page view"""
+    template_name = 'services.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get all active services for the services page
+        from Service.models import Service
+        services = Service.objects.filter(is_active=True).prefetch_related('images').order_by('-created_at')
+        # Convert to list of dictionaries to match API format
+        context['services'] = [
+            {
+                'id': service.id,
+                'name': service.name,
+                'slug': service.slug,
+                'description': service.description,
+                'meta_description': service.meta_description,
+                'image': {
+                    'image': service.images.first().image.url if service.images.exists() else None,
+                    'alt_text': service.images.first().alt_text if service.images.exists() else service.name
+                },
+                'images': [
+                    {
+                        'id': img.id,
+                        'image': img.image.url,
+                        'alt_text': img.alt_text or service.name,
+                        'order': img.order
+                    }
+                    for img in service.images.all().order_by('order')
+                ],
+                'category': 'dental_services',
+                'is_active': service.is_active,
+                'is_featured': service.is_featured,
+                'is_new': service.is_new,
+                'created_at': service.created_at.isoformat()
+            }
+            for service in services
+        ]
+        return context
+
+class SingleServiceView(TemplateView):
+    """Single service page view"""
+    template_name = 'service-details.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the service by ID with prefetched images
+        from Service.models import Service
+        service = Service.objects.prefetch_related('images').get(id=kwargs['service_id'])
+        context['service'] = service
+        return context
+
 
 def book_appointment(request):
     """Handle appointment booking form submission"""

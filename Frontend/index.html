@@ -125,28 +125,28 @@
 			
 			
 			<div class="row" id="products-container">
-				{% for product in products %}
+				{% for service in services %}
 				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item" data-category="{{ product.category }}">
+					<div class="single-product-item" data-category="{{ service.category }}">
 						<div class="product-image">
-							<a href="{% url 'frontend:single_product' product_id=product.id %}">
-								{% if product.primary_image %}
-									<img src="{{ product.primary_image.image }}" alt="{{ product.primary_image.alt_text|default:product.name }}" onerror="this.src='{% static 'img/products/default.jpg' %}'">
+							<a href="{% url 'frontend:single_product' product_id=service.id %}">
+								{% if service.image.image %}
+									<img src="{{ service.image.image }}" alt="{{ service.image.alt_text|default:service.name }}" onerror="this.src='{% static 'img/products/default.jpg' %}'">
 								{% else %}
-									<img src="{% static 'img/products/default.jpg' %}" alt="{{ product.name }}">
+									<img src="{% static 'img/products/default.jpg' %}" alt="{{ service.name }}">
 								{% endif %}
 							</a>
 						</div>
-						<h3>{{ product.name }}</h3>
-						<p class="product-price"><span>Per Session</span> ${{ product.price|floatformat:0 }} </p>
-						<a href="{% url 'frontend:cart' %}" class="cart-btn" data-product-id="{{ product.id }}">
-							<i class="fas fa-shopping-cart"></i> Add to Cart
+						<h3>{{ service.name }}</h3>
+						<p class="service-description">{{ service.meta_description }}</p>
+						<a href="{% url 'frontend:appointment' %}" class="cart-btn" data-service-id="{{ service.id }}">
+							<i class="fas fa-calendar-alt"></i> Book Appointment
 						</a>
 					</div>
 				</div>
 				{% empty %}
 				<div class="col-12 text-center">
-					<p>No products available at the moment.</p>
+					<p>No services available at the moment.</p>
 				</div>
 				{% endfor %}
 			</div>
@@ -154,7 +154,7 @@
 			<!-- add more products button -->
 			<div class="row">
 				<div class="col-12 text-center">
-					<a href="{% url 'frontend:shop' %}" class="boxed-btn">View All Services</a>
+					<a href="{% url 'frontend:services' %}" class="boxed-btn">View All Services</a>
 				</div>
 			</div>
 		</div>

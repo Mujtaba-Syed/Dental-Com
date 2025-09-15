@@ -6,73 +6,68 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-    loadProducts();
-    initializeCartButtons();
+    loadServices();
+    initializeBookingButtons();
     updateCartDisplay();
 });
 
-// Load products from API
-async function loadProducts() {
+// Load services from API
+async function loadServices() {
     try {
-        const response = await fetch('/api/products/');
+        const response = await fetch('/api/services/');
         const data = await response.json();
-        products = data.results;
-        console.log('Products loaded:', products);
+        products = data.results; // Keep using 'products' variable for compatibility
+        console.log('Services loaded:', products);
         
         // Debug: Check image URLs
-        products.forEach(product => {
-            console.log(`Product: ${product.name}`);
-            console.log(`Primary Image:`, product.primary_image);
-            if (product.primary_image) {
-                console.log(`Image URL: ${product.primary_image.image}`);
+        products.forEach(service => {
+            console.log(`Service: ${service.name}`);
+            console.log(`Image:`, service.image);
+            if (service.image) {
+                console.log(`Image URL: ${service.image}`);
                 // Test if image loads
                 const img = new Image();
-                img.onload = () => console.log(`Image loaded successfully: ${product.primary_image.image}`);
-                img.onerror = () => console.error(`Image failed to load: ${product.primary_image.image}`);
-                img.src = product.primary_image.image;
+                img.onload = () => console.log(`Image loaded successfully: ${service.image}`);
+                img.onerror = () => console.error(`Image failed to load: ${service.image}`);
+                img.src = service.image;
             }
         });
     } catch (error) {
-        console.error('Error loading products:', error);
+        console.error('Error loading services:', error);
     }
 }
 
-// Initialize cart buttons
-function initializeCartButtons() {
-    const cartButtons = document.querySelectorAll('.cart-btn');
-    cartButtons.forEach(button => {
+// Initialize booking buttons
+function initializeBookingButtons() {
+    const bookingButtons = document.querySelectorAll('.cart-btn');
+    bookingButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
-            const productId = this.getAttribute('data-product-id');
-            addToCart(productId);
+            const serviceId = this.getAttribute('data-service-id');
+            if (serviceId) {
+                handleServiceBooking(serviceId);
+            }
         });
     });
 }
 
-// Add product to cart
-function addToCart(productId) {
-    const product = products.find(p => p.id == productId);
-    if (!product) {
-        console.error('Product not found:', productId);
+// Handle service booking
+function handleServiceBooking(serviceId) {
+    const service = products.find(s => s.id == serviceId);
+    if (!service) {
+        console.error('Service not found:', serviceId);
         return;
     }
 
-    const existingItem = cart.find(item => item.id == productId);
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: parseFloat(product.price),
-            image: product.primary_image ? product.primary_image.image : '/static/img/products/default.jpg',
-            quantity: 1
-        });
-    }
+    // Store selected service for appointment booking
+    localStorage.setItem('selectedService', JSON.stringify({
+        id: service.id,
+        name: service.name,
+        description: service.description
+    }));
 
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartDisplay();
-    showCartNotification(product.name);
+    // Show booking notification
+    showBookingNotification(service.name);
 }
 
 // Update cart display
@@ -84,15 +79,15 @@ function updateCartDisplay() {
     }
 }
 
-// Show cart notification
-function showCartNotification(productName) {
+// Show booking notification
+function showBookingNotification(serviceName) {
     // Create notification element
     const notification = document.createElement('div');
-    notification.className = 'cart-notification';
+    notification.className = 'booking-notification';
     notification.innerHTML = `
         <div class="notification-content">
-            <i class="fas fa-check-circle"></i>
-            <span>${productName} added to cart!</span>
+            <i class="fas fa-calendar-check"></i>
+            <span>Redirecting to book ${serviceName} appointment...</span>
         </div>
     `;
     
@@ -101,7 +96,7 @@ function showCartNotification(productName) {
         position: fixed;
         top: 20px;
         right: 20px;
-        background: #28a745;
+        background: #007bff;
         color: white;
         padding: 15px 20px;
         border-radius: 5px;
@@ -127,15 +122,17 @@ function showCartNotification(productName) {
     
     document.body.appendChild(notification);
     
-    // Remove notification after 3 seconds
+    // Remove notification after 2 seconds and redirect
     setTimeout(() => {
         notification.style.animation = 'slideIn 0.3s ease-out reverse';
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.parentNode.removeChild(notification);
             }
+            // Redirect to contact page after notification
+            window.location.href = '/contact/';
         }, 300);
-    }, 3000);
+    }, 2000);
 }
 
 // Product search functionality
