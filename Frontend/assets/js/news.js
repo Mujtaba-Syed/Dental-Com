@@ -1,6 +1,62 @@
+// Global utility functions
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+function getBackgroundClass(index) {
+    const bgClasses = ['news-bg-1', 'news-bg-2', 'news-bg-3', 'news-bg-4', 'news-bg-5', 'news-bg-6'];
+    return bgClasses[index % bgClasses.length];
+}
+
+// Add CSS for consistent card heights
+function addCardHeightStyles() {
+    // Check if styles already exist
+    if (document.getElementById('news-card-styles')) {
+        return;
+    }
+    
+    const style = document.createElement('style');
+    style.id = 'news-card-styles';
+    style.textContent = `
+        .single-latest-news {
+            min-height: 520px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            height: 520px !important;
+        }
+        .news-text-box {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+        }
+        .news-description {
+            flex: 1 !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            min-height: 60px !important;
+        }
+        .latest-news-bg {
+            height: 200px !important;
+            background-size: cover !important;
+            background-position: center !important;
+        }
+    `;
+    document.head.appendChild(style);
+    console.log('Card height styles applied');
+}
+
 // News dynamic rendering functionality using template-based approach
 document.addEventListener('DOMContentLoaded', function() {
     console.log('News.js loaded and DOM ready');
+    
+    // Add CSS styles for consistent card heights
+    addCardHeightStyles();
     
     const newsContainer = document.getElementById('news-container');
     const loadingSpinner = document.getElementById('loading-spinner');
@@ -15,27 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // API endpoint
     const API_URL = 'http://127.0.0.1:8000/api/blog/posts/';
     
-    // Function to format date
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    }
-    
-    // Function to get background image class based on index
-    function getBackgroundClass(index) {
-        const bgClasses = ['news-bg-1', 'news-bg-2', 'news-bg-3', 'news-bg-4', 'news-bg-5', 'news-bg-6'];
-        return bgClasses[index % bgClasses.length];
-    }
-    
     // Function to populate news card from template
     function populateNewsCard(template, post, index) {
         // Get the template element
         const newsCard = template.cloneNode(true);
         newsCard.style.display = 'block'; // Make it visible
+        
+        // Ensure styles are applied
+        addCardHeightStyles();
         
         // Update background class
         const newsImage = newsCard.querySelector('.news-image');
@@ -64,7 +107,11 @@ document.addEventListener('DOMContentLoaded', function() {
         newsCard.querySelector('.author-name').textContent = authorName;
         
         newsCard.querySelector('.news-date').textContent = formatDate(post.created_at);
-        newsCard.querySelector('.news-description').textContent = post.description;
+        
+        // Truncate description to keep card size consistent
+        const description = post.description;
+        const truncatedDescription = description.length > 120 ? description.substring(0, 120) + '...' : description;
+        newsCard.querySelector('.news-description').textContent = truncatedDescription;
         
         return newsCard;
     }
@@ -188,29 +235,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Test API connectivity first
-    console.log('Testing API connectivity...');
-    fetch(API_URL)
-        .then(response => {
-            console.log('API Test Response:', response.status);
-            if (response.ok) {
-                console.log('API is accessible');
-                loadNews();
-            } else {
-                console.error('API returned error:', response.status);
+    // Only load news if we're on the news page (not index page)
+    if (newsContainer) {
+        // Test API connectivity first
+        console.log('Testing API connectivity...');
+        fetch(API_URL)
+            .then(response => {
+                console.log('API Test Response:', response.status);
+                if (response.ok) {
+                    console.log('API is accessible');
+                    loadNews();
+                } else {
+                    console.error('API returned error:', response.status);
+                    // Show error message
+                    if (newsContainer) {
+                        newsContainer.innerHTML = '<div class="col-12 text-center"><p>API Error: ' + response.status + '</p></div>';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('API Test Failed:', error);
                 // Show error message
                 if (newsContainer) {
-                    newsContainer.innerHTML = '<div class="col-12 text-center"><p>API Error: ' + response.status + '</p></div>';
+                    newsContainer.innerHTML = '<div class="col-12 text-center"><p>Cannot connect to API. Please check if the backend server is running.</p></div>';
                 }
-            }
-        })
-        .catch(error => {
-            console.error('API Test Failed:', error);
-            // Show error message
-            if (newsContainer) {
-                newsContainer.innerHTML = '<div class="col-12 text-center"><p>Cannot connect to API. Please check if the backend server is running.</p></div>';
-            }
-        });
+            });
+    }
 });
 
 // Single news page functionality
@@ -220,6 +270,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pathMatch) {
         console.log('Single news page detected');
         loadSingleNews();
+    }
+    
+    // Check if we're on the index page and load latest news
+    if (window.location.pathname === '/' || window.location.pathname === '/home/') {
+        console.log('Index page detected, loading latest news');
+        loadIndexNews();
     }
 });
 
@@ -350,15 +406,6 @@ function populateSingleNews(blogPost) {
     console.log('Single news page populated successfully');
 }
 
-// Function to format date (reuse from main functionality)
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-}
 
 // Function to show error message
 function showError(message) {
@@ -432,4 +479,114 @@ function updateSidebarTags(keywords) {
             tagsList.appendChild(li);
         }
     }
+}
+
+// Function to load latest 3 news articles for index page
+async function loadIndexNews() {
+    console.log('Loading latest news for index page...');
+    
+    const newsContainer = document.getElementById('index-news-container');
+    const loadingSpinner = document.getElementById('news-loading-spinner');
+    
+    if (!newsContainer) {
+        console.error('Index news container not found');
+        return;
+    }
+    
+    try {
+        // Show loading state
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'block';
+        }
+        
+        // Fetch latest 3 news articles
+        const response = await fetch('http://127.0.0.1:8000/api/blog/posts/?limit=3');
+        console.log('Index news API Response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Index news data received:', data);
+        
+        // Clear existing content except template
+        const template = newsContainer.querySelector('.news-template');
+        const existingCards = newsContainer.querySelectorAll('.col-lg-4.col-md-6:not(.news-template)');
+        existingCards.forEach(card => card.remove());
+        
+        if (data.results && data.results.length > 0) {
+            console.log('Processing', data.results.length, 'news articles for index');
+            data.results.forEach((post, index) => {
+                console.log('Creating index card for post:', post.title);
+                const newsCard = populateIndexNewsCard(template, post, index);
+                newsContainer.appendChild(newsCard);
+            });
+        } else {
+            console.log('No news articles found for index');
+            const noNewsDiv = document.createElement('div');
+            noNewsDiv.className = 'col-12 text-center';
+            noNewsDiv.innerHTML = '<p>No news articles found.</p>';
+            newsContainer.appendChild(noNewsDiv);
+        }
+        
+    } catch (error) {
+        console.error('Error loading index news:', error);
+        if (newsContainer) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'col-12 text-center';
+            errorDiv.innerHTML = '<p>Error loading news articles. Please try again later.</p>';
+            newsContainer.appendChild(errorDiv);
+        }
+    } finally {
+        // Hide loading state
+        if (loadingSpinner) {
+            loadingSpinner.style.display = 'none';
+        }
+    }
+}
+
+// Function to populate index news card from template
+function populateIndexNewsCard(template, post, index) {
+    // Get the template element
+    const newsCard = template.cloneNode(true);
+    newsCard.style.display = 'block'; // Make it visible
+    
+    // Ensure styles are applied
+    addCardHeightStyles();
+    
+    // Update background class
+    const newsImage = newsCard.querySelector('.news-image');
+    newsImage.className = `latest-news-bg ${getBackgroundClass(index)} news-image`;
+    
+    // Set background image if available
+    if (post.image) {
+        newsImage.style.backgroundImage = `url('${post.image}')`;
+    }
+    
+    // Update links
+    const newsLink = newsCard.querySelector('.news-link');
+    const titleLink = newsCard.querySelector('.news-title-link');
+    const readMoreLink = newsCard.querySelector('.news-read-more');
+    
+    newsLink.href = `/news/${post.id}/`;
+    titleLink.href = `/news/${post.id}/`;
+    readMoreLink.href = `/news/${post.id}/`;
+    
+    // Update content
+    titleLink.textContent = post.title;
+    
+    const authorName = post.author.first_name && post.author.last_name 
+        ? `${post.author.first_name} ${post.author.last_name}`.trim()
+        : post.author.username;
+    newsCard.querySelector('.author-name').textContent = authorName;
+    
+    newsCard.querySelector('.news-date').textContent = formatDate(post.created_at);
+    
+    // Truncate description to keep card size consistent
+    const description = post.description;
+    const truncatedDescription = description.length > 100 ? description.substring(0, 100) + '...' : description;
+    newsCard.querySelector('.news-description').textContent = truncatedDescription;
+    
+    return newsCard;
 } 
