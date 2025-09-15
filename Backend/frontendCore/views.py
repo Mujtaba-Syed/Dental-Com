@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Appointment
+from Product.models import Product
 import json
 
 # Create your views here.
@@ -13,6 +14,16 @@ import json
 class HomeView(TemplateView):
     """Home page view"""
     template_name = 'index.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get active products for the home page with their primary images
+        from Product.serializers import ProductListSerializer
+        products = Product.objects.filter(is_active=True).prefetch_related('images').order_by('-created_at')[:3]
+        # Serialize the products to match API format
+        serializer = ProductListSerializer(products, many=True)
+        context['products'] = serializer.data
+        return context
 
 class Home2View(TemplateView):
     """Alternative home page view"""
@@ -25,6 +36,16 @@ class AboutView(TemplateView):
 class ShopView(TemplateView):
     """Shop page view"""
     template_name = 'shop.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get all active products for the shop page
+        from Product.serializers import ProductListSerializer
+        products = Product.objects.filter(is_active=True).prefetch_related('images').order_by('-created_at')
+        # Serialize the products to match API format
+        serializer = ProductListSerializer(products, many=True)
+        context['products'] = serializer.data
+        return context
 
 class SingleProductView(TemplateView):
     """Single product page view"""

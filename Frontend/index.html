@@ -122,36 +122,39 @@
 				</div>
 			</div>
 
+			
+			
+			<div class="row" id="products-container">
+				{% for product in products %}
+				<div class="col-lg-4 col-md-6 text-center">
+					<div class="single-product-item" data-category="{{ product.category }}">
+						<div class="product-image">
+							<a href="{% url 'frontend:single_product' product_id=product.id %}">
+								{% if product.primary_image %}
+									<img src="{{ product.primary_image.image }}" alt="{{ product.primary_image.alt_text|default:product.name }}" onerror="this.src='{% static 'img/products/default.jpg' %}'">
+								{% else %}
+									<img src="{% static 'img/products/default.jpg' %}" alt="{{ product.name }}">
+								{% endif %}
+							</a>
+						</div>
+						<h3>{{ product.name }}</h3>
+						<p class="product-price"><span>Per Session</span> ${{ product.price|floatformat:0 }} </p>
+						<a href="{% url 'frontend:cart' %}" class="cart-btn" data-product-id="{{ product.id }}">
+							<i class="fas fa-shopping-cart"></i> Add to Cart
+						</a>
+					</div>
+				</div>
+				{% empty %}
+				<div class="col-12 text-center">
+					<p>No products available at the moment.</p>
+				</div>
+				{% endfor %}
+			</div>
+
+			<!-- add more products button -->
 			<div class="row">
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'frontend:single_product' product_id=1 %}"><img src="{% static 'img/products/braces.jpeg' %}" alt=""></a>
-						</div>
-						<h3>Braces</h3>
-						<p class="product-price"><span>Per Session</span> 85$ </p>
-						<a href="{% url 'frontend:cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'frontend:single_product' product_id=2 %}"><img src="{% static 'img/products/invisalign.jpg' %}" alt=""></a>
-						</div>
-						<h3>Invisalign</h3>
-						<p class="product-price"><span>Per Session</span> 70$ </p>
-						<a href="{% url 'frontend:cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
-				</div>
-				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
-					<div class="single-product-item">
-						<div class="product-image">
-							<a href="{% url 'frontend:single_product' product_id=3 %}"><img src="{% static 'img/products/retainer.jpeg' %}" alt=""></a>
-						</div>
-						<h3>Retainer</h3>
-						<p class="product-price"><span>Per Session</span> 35$ </p>
-						<a href="{% url 'frontend:cart' %}" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-					</div>
+				<div class="col-12 text-center">
+					<a href="{% url 'frontend:shop' %}" class="boxed-btn">View All Services</a>
 				</div>
 			</div>
 		</div>
@@ -272,7 +275,7 @@
     	<div class="container">
         	<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
             <div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-            <a href="shop.html" class="cart-btn btn-lg">Shop Now</a>
+            <a href="{% url 'frontend:shop' %}" class="cart-btn btn-lg">Shop Now</a>
         </div>
     </section>
 	<!-- end shop banner -->
