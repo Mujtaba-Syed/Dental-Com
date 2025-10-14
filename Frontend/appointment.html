@@ -287,6 +287,185 @@
 			font-size: 1.5rem;
 			cursor: pointer;
 		}
+		
+		/* Multi-Select Service Dropdown Styles */
+		.service-dropdown-wrapper {
+			position: relative;
+			width: 100%;
+		}
+		
+		.service-dropdown-trigger {
+			background: white;
+			border: 2px solid #e9ecef;
+			border-radius: 5px;
+			padding: 12px 15px;
+			cursor: pointer;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			transition: border-color 0.3s ease;
+			min-height: 46px;
+		}
+		
+		.service-dropdown-trigger:hover {
+			border-color: #007bff;
+		}
+		
+		.service-dropdown-trigger.active {
+			border-color: #007bff;
+			box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+		}
+		
+		.service-dropdown-trigger i {
+			color: #666;
+			transition: transform 0.3s ease;
+		}
+		
+		.service-dropdown-trigger.active i {
+			transform: rotate(180deg);
+		}
+		
+		#serviceDropdownPlaceholder {
+			color: #6c757d;
+			font-size: 14px;
+		}
+		
+		.service-dropdown-menu {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			background: white;
+			border: 2px solid #007bff;
+			border-radius: 5px;
+			margin-top: 5px;
+			max-height: 300px;
+			overflow-y: auto;
+			z-index: 1000;
+			display: none;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+		}
+		
+		.service-dropdown-menu.show {
+			display: block;
+			animation: slideDown 0.3s ease;
+		}
+		
+		@keyframes slideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		
+		.service-option {
+			padding: 12px 15px;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+			font-size: 14px;
+			color: #333;
+			border-bottom: 1px solid #f0f0f0;
+		}
+		
+		.service-option:last-child {
+			border-bottom: none;
+		}
+		
+		.service-option:hover {
+			background-color: #f8f9fa;
+		}
+		
+		.service-option.selected {
+			background-color: #007bff;
+			color: white;
+			font-weight: 600;
+		}
+		
+		.service-option.selected:hover {
+			background-color: #0056b3;
+		}
+		
+		/* Selected Services Pills Styles */
+		.selected-services-pills {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			min-height: 35px;
+			padding: 8px;
+			background-color: #f8f9fa;
+			border-radius: 5px;
+			border: 2px dashed #dee2e6;
+		}
+		
+		.selected-services-pills:empty {
+			display: none;
+		}
+		
+		.service-pill {
+			display: inline-flex;
+			align-items: center;
+			background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+			color: white;
+			padding: 8px 12px;
+			border-radius: 20px;
+			font-size: 13px;
+			font-weight: 500;
+			box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+			animation: pillFadeIn 0.3s ease;
+			transition: all 0.2s ease;
+		}
+		
+		.service-pill:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+		}
+		
+		@keyframes pillFadeIn {
+			from {
+				opacity: 0;
+				transform: scale(0.8);
+			}
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+		
+		.service-pill-text {
+			margin-right: 8px;
+		}
+		
+		.service-pill-remove {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 18px;
+			height: 18px;
+			background-color: rgba(255, 255, 255, 0.3);
+			border-radius: 50%;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			font-weight: bold;
+			font-size: 14px;
+		}
+		
+		.service-pill-remove:hover {
+			background-color: rgba(255, 255, 255, 0.5);
+			transform: rotate(90deg);
+		}
+		
+		/* Validation styling for service dropdown */
+		.service-dropdown-wrapper.is-invalid .service-dropdown-trigger {
+			border-color: #dc3545;
+		}
+		
+		.service-dropdown-wrapper.is-valid .service-dropdown-trigger {
+			border-color: #28a745;
+		}
 	</style>
 
 </head>
@@ -392,25 +571,35 @@
 								</div>
 							</div>
 							
-							<div class="form-group">
-								<label for="service">Service Required *</label>
-								<div class="select-wrapper">
-									<select class="form-control" id="service" name="service" required>
-										<option value="">Select Service</option>
-										<option value="general_checkup">General Checkup</option>
-										<option value="cleaning">Teeth Cleaning</option>
-										<option value="filling">Dental Filling</option>
-										<option value="extraction">Tooth Extraction</option>
-										<option value="crown">Dental Crown</option>
-										<option value="root_canal">Root Canal Treatment</option>
-										<option value="orthodontics">Orthodontics Consultation</option>
-										<option value="cosmetic">Cosmetic Dentistry</option>
-										<option value="emergency">Emergency Treatment</option>
-										<option value="other">Other</option>
-									</select>
-									<div class="select-display" id="service_display"></div>
+						<div class="form-group">
+							<label for="service">Service Required *</label>
+							
+							<!-- Selected Services Pills Container -->
+							<div id="selectedServicesPills" class="selected-services-pills mb-2"></div>
+							
+							<!-- Custom Multi-Select Dropdown -->
+							<div class="service-dropdown-wrapper">
+								<div class="service-dropdown-trigger" id="serviceDropdownTrigger">
+									<span id="serviceDropdownPlaceholder">Click to select services</span>
+									<i class="fas fa-chevron-down"></i>
+								</div>
+								<div class="service-dropdown-menu" id="serviceDropdownMenu">
+									<div class="service-option" data-value="general_checkup">General Checkup</div>
+									<div class="service-option" data-value="cleaning">Teeth Cleaning</div>
+									<div class="service-option" data-value="filling">Dental Filling</div>
+									<div class="service-option" data-value="extraction">Tooth Extraction</div>
+									<div class="service-option" data-value="crown">Dental Crown</div>
+									<div class="service-option" data-value="root_canal">Root Canal Treatment</div>
+									<div class="service-option" data-value="orthodontics">Orthodontics Consultation</div>
+									<div class="service-option" data-value="cosmetic">Cosmetic Dentistry</div>
+									<div class="service-option" data-value="emergency">Emergency Treatment</div>
+									<div class="service-option" data-value="other">Other</div>
 								</div>
 							</div>
+							
+							<!-- Hidden input to store selected services for form submission -->
+							<input type="hidden" id="selectedServicesInput" name="services" required>
+						</div>
 							
 							<div class="form-group">
 								<label for="message">Additional Information</label>
@@ -574,13 +763,117 @@
 	<!-- appointment form validation -->
 	<script>
 		$(document).ready(function() {
+			// Multi-Select Service Functionality
+			var selectedServices = [];
+			
+			// Toggle dropdown
+			$('#serviceDropdownTrigger').on('click', function(e) {
+				e.stopPropagation();
+				$(this).toggleClass('active');
+				$('#serviceDropdownMenu').toggleClass('show');
+			});
+			
+			// Close dropdown when clicking outside
+			$(document).on('click', function(e) {
+				if (!$(e.target).closest('.service-dropdown-wrapper').length) {
+					$('#serviceDropdownTrigger').removeClass('active');
+					$('#serviceDropdownMenu').removeClass('show');
+				}
+			});
+			
+			// Handle service option click
+			$('.service-option').on('click', function(e) {
+				e.stopPropagation();
+				var value = $(this).data('value');
+				var text = $(this).text();
+				
+				if ($(this).hasClass('selected')) {
+					// Deselect
+					removeService(value);
+				} else {
+					// Select
+					addService(value, text);
+				}
+			});
+			
+			// Add service to selected list
+			function addService(value, text) {
+				// Check if already selected
+				if (selectedServices.some(s => s.value === value)) {
+					return;
+				}
+				
+				// Add to array
+				selectedServices.push({ value: value, text: text });
+				
+				// Update UI
+				updateServiceUI();
+			}
+			
+			// Remove service from selected list
+			function removeService(value) {
+				// Remove from array
+				selectedServices = selectedServices.filter(s => s.value !== value);
+				
+				// Update UI
+				updateServiceUI();
+			}
+			
+			// Update the UI (pills, dropdown options, hidden input)
+			function updateServiceUI() {
+				// Update pills container
+				var pillsContainer = $('#selectedServicesPills');
+				pillsContainer.empty();
+				
+				if (selectedServices.length > 0) {
+					selectedServices.forEach(function(service) {
+						var pill = $('<div class="service-pill"></div>');
+						pill.html(`
+							<span class="service-pill-text">${service.text}</span>
+							<span class="service-pill-remove" data-value="${service.value}">×</span>
+						`);
+						pillsContainer.append(pill);
+					});
+				}
+				
+				// Update dropdown options
+				$('.service-option').each(function() {
+					var value = $(this).data('value');
+					if (selectedServices.some(s => s.value === value)) {
+						$(this).addClass('selected');
+					} else {
+						$(this).removeClass('selected');
+					}
+				});
+				
+				// Update hidden input
+				var servicesArray = selectedServices.map(s => s.value);
+				$('#selectedServicesInput').val(servicesArray.join(','));
+				
+				// Update placeholder text
+				if (selectedServices.length > 0) {
+					$('#serviceDropdownPlaceholder').text(`${selectedServices.length} service(s) selected`);
+					$('.service-dropdown-wrapper').removeClass('is-invalid').addClass('is-valid');
+				} else {
+					$('#serviceDropdownPlaceholder').text('Click to select services');
+					$('.service-dropdown-wrapper').removeClass('is-valid');
+				}
+			}
+			
+			// Handle pill remove click
+			$(document).on('click', '.service-pill-remove', function(e) {
+				e.stopPropagation();
+				var value = $(this).data('value');
+				removeService(value);
+			});
+			
 			// Set minimum date to today
 			var today = new Date().toISOString().split('T')[0];
 			$('#appointmentDate').attr('min', today);
 			
 			// Initialize form state - show any pre-selected values
 			function initializeFormState() {
-				$('#appointmentTime, #service').each(function() {
+				$('#appointmentTime').each(function() {
 					var $this = $(this);
 					var selectedValue = $this.val();
 					var selectedText = $this.find('option:selected').text();
@@ -621,14 +914,22 @@
 				// Clear previous error styling
 				$('.form-control').removeClass('is-invalid');
 				$('.error-message').remove();
+				$('.service-dropdown-wrapper').removeClass('is-invalid');
 				
-				// Validate required fields
-				$('input[required], select[required], textarea[required]').each(function() {
+				// Validate required fields (excluding the hidden services input)
+				$('input[required]:not(#selectedServicesInput), select[required], textarea[required]').each(function() {
 					if ($(this).val() === '') {
 						$(this).addClass('is-invalid');
 						isValid = false;
 					}
 				});
+				
+				// Validate services selection
+				if (selectedServices.length === 0) {
+					$('.service-dropdown-wrapper').addClass('is-invalid');
+					$('.service-dropdown-wrapper').after('<div class="error-message text-danger small mt-1">Please select at least one service</div>');
+					isValid = false;
+				}
 				
 				// Validate email format
 				var email = $('#email').val();
@@ -672,7 +973,7 @@
 						'phone': $('#phone').val(),
 						'appointment_date': $('#appointmentDate').val(),
 						'appointment_time': $('#appointmentTime').val(),
-						'service': $('#service').val(),
+						'services': $('#selectedServicesInput').val(),
 						'message': $('#message').val(),
 						'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
 					};
@@ -705,6 +1006,9 @@
 								
 								// Reset form
 								$('#appointmentForm')[0].reset();
+								// Reset services selection
+								selectedServices = [];
+								updateServiceUI();
 								$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
 								
 								// Scroll to top to show success message
@@ -764,7 +1068,7 @@
 			});
 			
 			// Visual feedback for form selections
-			$('#appointmentTime, #service').on('change', function() {
+			$('#appointmentTime').on('change', function() {
 				var $this = $(this);
 				var selectedValue = $this.val();
 				var selectedText = $this.find('option:selected').text();
@@ -806,7 +1110,7 @@
 			});
 			
 			// Handle focus and blur events for better dropdown visibility
-			$('#appointmentTime, #service').on('focus', function() {
+			$('#appointmentTime').on('focus', function() {
 				var $this = $(this);
 				var fieldId = $this.attr('id');
 				var displayId = fieldId + '_display';
@@ -815,7 +1119,7 @@
 				$('#' + displayId).hide();
 			});
 			
-			$('#appointmentTime, #service').on('blur', function() {
+			$('#appointmentTime').on('blur', function() {
 				var $this = $(this);
 				var fieldId = $this.attr('id');
 				var displayId = fieldId + '_display';
