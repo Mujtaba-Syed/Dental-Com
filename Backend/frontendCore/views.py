@@ -19,6 +19,8 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         # Get active services for the home page
         from Service.models import Service
+        from Review.models import Review
+        
         services = Service.objects.filter(is_active=True).prefetch_related('images').order_by('-created_at')[:3]
         # Convert to list of dictionaries to match API format
         context['services'] = [
@@ -49,6 +51,11 @@ class HomeView(TemplateView):
             }
             for service in services
         ]
+        
+        # Get reviews for testimonials (only active/non-archived reviews)
+        reviews = Review.objects.select_related('user').filter(is_archived=False).order_by('-created_at')
+        context['reviews'] = reviews
+        
         return context
 
 class Home2View(TemplateView):

@@ -4,26 +4,41 @@
     $(document).ready(function($){
         
         // testimonial sliders
-        $(".testimonial-sliders").owlCarousel({
-            items: 1,
-            loop: true,
-            autoplay: true,
-            responsive:{
-                0:{
-                    items:1,
-                    nav:false
-                },
-                600:{
-                    items:1,
-                    nav:false
-                },
-                1000:{
-                    items:1,
-                    nav:false,
-                    loop:true
+        var testimonialSlider = $(".testimonial-sliders");
+        if (testimonialSlider.length && testimonialSlider.children().length > 0) {
+            var itemCount = testimonialSlider.children().length;
+            console.log('Testimonial Carousel: Found ' + itemCount + ' items');
+            
+            testimonialSlider.owlCarousel({
+                items: 1,
+                loop: itemCount > 1,
+                autoplay: true, 
+                autoplayTimeout: 5000,
+                autoplayHoverPause: true,
+                dots: true, 
+                nav: false,
+                margin: 0,
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:false
+                    },
+                    600:{
+                        items:1,
+                        nav:false
+                    },
+                    1000:{
+                        items:1,
+                        nav:false,
+                        loop: itemCount > 1
+                    }
                 }
-            }
-        });
+            });
+            
+            console.log('Testimonial Carousel: Initialized successfully');
+        } else {
+            console.log('Testimonial Carousel: No items found or container missing');
+        }
 
         // homepage slider
         $(".homepage-slider").owlCarousel({
