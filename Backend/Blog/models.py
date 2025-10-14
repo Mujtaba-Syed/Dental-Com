@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.urls import reverse
 
 
@@ -38,7 +38,7 @@ class BlogPost(models.Model):
     )
     
     # Additional fields
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     category = models.ForeignKey('BlogCategory', on_delete=models.SET_NULL, null=True, blank=True, related_name='blog_posts')
     tags = models.ManyToManyField('BlogTag', blank=True, related_name='blog_posts')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
