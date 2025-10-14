@@ -212,6 +212,45 @@ class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
         )
 
 
+class AllReviewsListView(generics.ListAPIView):
+    """
+    GET: List all reviews across all products
+    """
+    permission_classes = [AllowAny]
+    serializer_class = ReviewListSerializer
+    
+    def get_queryset(self):
+        """Get all reviews, optionally filtered"""
+        queryset = Review.objects.filter(
+            is_archived=False
+        ).select_related('user', 'product').order_by('-created_at')
+        
+        # Optional filtering by rating
+        rating = self.request.query_params.get('rating', None)
+        if rating:
+            try:
+                rating = int(rating)
+                if 1 <= rating <= 5:
+                    queryset = queryset.filter(rating=rating)
+            except ValueError:
+                pass
+        
+        # Optional filtering by verified purchase
+        verified = self.request.query_params.get('verified', None)
+        if verified and verified.lower() == 'true':
+            queryset = queryset.filter(is_verified_purchase=True)
+        
+        # Optional filtering by product_id
+        product_id = self.request.query_params.get('product_id', None)
+        if product_id:
+            try:
+                queryset = queryset.filter(product_id=int(product_id))
+            except ValueError:
+                pass
+        
+        return queryset
+
+
 class UserReviewListView(generics.ListAPIView):
     """
     GET: List all reviews by the authenticated user

@@ -1,7 +1,198 @@
+// Authentication Manager
+const AuthManager = {
+    // Check if user is authenticated
+    isAuthenticated() {
+        const token = localStorage.getItem('access_token');
+        return token !== null;
+    },
+    
+    // Get access token
+    getAccessToken() {
+        return localStorage.getItem('access_token');
+    },
+    
+    // Get refresh token
+    getRefreshToken() {
+        return localStorage.getItem('refresh_token');
+    },
+    
+    // Get user data
+    getUser() {
+        const userData = localStorage.getItem('user_data');
+        return userData ? JSON.parse(userData) : null;
+    },
+    
+    // Save authentication data
+    saveAuth(accessToken, refreshToken, userData) {
+        localStorage.setItem('access_token', accessToken);
+        localStorage.setItem('refresh_token', refreshToken);
+        localStorage.setItem('user_data', JSON.stringify(userData));
+        console.log('Auth data saved:', { userData });
+    },
+    
+    // Clear authentication data
+    clearAuth() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user_data');
+    },
+    
+    // Guest login
+    async guestLogin() {
+        try {
+            const response = await fetch('/api/auth/guest-login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({})
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.saveAuth(data.data.access, data.data.refresh, data.data.user);
+                return { success: true, message: 'Guest login successful' };
+            } else {
+                return { success: false, message: data.message };
+            }
+        } catch (error) {
+            console.error('Guest login error:', error);
+            return { success: false, message: 'Network error occurred' };
+        }
+    },
+    
+    // Google OAuth login
+    async googleLogin(idToken) {
+        try {
+            const response = await fetch('/api/auth/google-auth/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id_token: idToken
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                this.saveAuth(data.data.access, data.data.refresh, data.data.user);
+                return { success: true, message: 'Google login successful' };
+            } else {
+                return { success: false, message: data.message };
+            }
+        } catch (error) {
+            console.error('Google login error:', error);
+            return { success: false, message: 'Network error occurred' };
+        }
+    }
+};
+
+// Google Sign-In configuration
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // Replace with your Google Client ID
+
 // Shop page functionality
 document.addEventListener('DOMContentLoaded', function() {
     const productContainer = document.getElementById('product-container');
     const filterButtons = document.querySelectorAll('.product-filters li');
+    
+    // Authentication Modal Handling
+    let pendingProductId = null;
+    
+    // Guest Login Button Handler
+    document.getElementById('guestLoginBtn').addEventListener('click', async function() {
+        const btn = this;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+        btn.disabled = true;
+        
+        const result = await AuthManager.guestLogin();
+        
+        if (result.success) {
+            $('#authModal').modal('hide');
+            // Show success message
+            alert('Logged in as guest! You can now add items to cart.');
+            
+            // If there was a pending product, add it to cart
+            if (pendingProductId) {
+                addToCart(pendingProductId);
+                pendingProductId = null;
+            }
+        } else {
+            alert('Guest login failed: ' + result.message);
+        }
+        
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    });
+    
+    // Google Login Button Handler
+    document.getElementById('googleLoginBtn').addEventListener('click', function() {
+        // Initialize Google Sign-In
+        google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            callback: handleGoogleSignIn
+        });
+        
+        // Prompt the user to select a Google Account and grant consent
+        google.accounts.id.prompt();
+    });
+    
+    // Handle Google Sign-In callback
+    async function handleGoogleSignIn(response) {
+        const idToken = response.credential;
+        
+        const result = await AuthManager.googleLogin(idToken);
+        
+        if (result.success) {
+            $('#authModal').modal('hide');
+            // Show success message
+            alert('Google login successful!');
+            
+            // If there was a pending product, add it to cart
+            if (pendingProductId) {
+                addToCart(pendingProductId);
+                pendingProductId = null;
+            }
+        } else {
+            alert('Google login failed: ' + result.message);
+        }
+    }
+    
+    // Add to cart function
+    function addToCart(productId) {
+        // Here you would implement your cart logic
+        console.log('Adding product to cart:', productId);
+        // Example: Make API call to add product to cart
+        // Or update local storage cart
+        alert('Product added to cart!');
+        
+        // Redirect to cart page or update cart count
+        // window.location.href = '/cart/';
+    }
+    
+    // Intercept Add to Cart button clicks
+    document.addEventListener('click', function(e) {
+        const cartBtn = e.target.closest('.cart-btn');
+        if (cartBtn) {
+            e.preventDefault();
+            
+            const productId = cartBtn.getAttribute('data-product-id');
+            
+            // Check if user is authenticated
+            if (!AuthManager.isAuthenticated()) {
+                // Store the product ID to add after login
+                pendingProductId = productId;
+                // Show authentication modal
+                $('#authModal').modal('show');
+            } else {
+                // User is authenticated, add to cart directly
+                addToCart(productId);
+            }
+        }
+    });
     
     // Debug: Check if products are loaded
     // console.log('Shop.js loaded. Products:', products);
@@ -82,8 +273,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <h3>${product.name}</h3>
                 <p class="product-price">
-                    ${originalPrice ? `<span class="original-price">$${originalPrice.toFixed(2)}</span>` : ''}
-                    <span class="current-price">$${displayPrice.toFixed(2)}</span>
+                    ${originalPrice ? `<span class="original-price">Rs ${originalPrice.toFixed(2)}</span>` : ''}
+                    <span class="current-price">Rs ${displayPrice.toFixed(2)}</span>
                 </p>
                 <a href="/cart/" class="cart-btn" data-product-id="${product.id}">
                     <i class="fas fa-shopping-cart"></i> Add to Cart

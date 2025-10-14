@@ -4,6 +4,11 @@ from . import views
 app_name = 'review'
 
 urlpatterns = [
+    # All reviews endpoint
+    path('reviews-list/', 
+         views.AllReviewsListView.as_view(), 
+         name='all-reviews-list'),
+    
     # Product-specific review endpoints
     path('products/<int:product_id>/reviews/', 
          views.ReviewListCreateView.as_view(), 

@@ -78,19 +78,26 @@
 		}
 		
 		.btn-primary {
-			background-color: #007bff;
-			border-color: #007bff;
+			background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+			border-color: #25D366;
 			padding: 12px 40px;
 			font-size: 16px;
 			font-weight: 600;
 			border-radius: 5px;
 			transition: all 0.3s ease;
+			box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
 		}
 		
 		.btn-primary:hover {
-			background-color: #0056b3;
-			border-color: #0056b3;
+			background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
+			border-color: #128C7E;
 			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+		}
+		
+		.btn-primary i {
+			margin-right: 8px;
+			font-size: 18px;
 		}
 		
 		.contact-info-section {
@@ -287,6 +294,300 @@
 			font-size: 1.5rem;
 			cursor: pointer;
 		}
+		
+		/* Multi-Select Service Dropdown Styles */
+		.service-dropdown-wrapper {
+			position: relative;
+			width: 100%;
+		}
+		
+		.service-dropdown-trigger {
+			background: white;
+			border: 2px solid #e9ecef;
+			border-radius: 5px;
+			padding: 12px 15px;
+			cursor: pointer;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			transition: border-color 0.3s ease;
+			min-height: 46px;
+		}
+		
+		.service-dropdown-trigger:hover {
+			border-color: #007bff;
+		}
+		
+		.service-dropdown-trigger.active {
+			border-color: #007bff;
+			box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+		}
+		
+		.service-dropdown-trigger i {
+			color: #666;
+			transition: transform 0.3s ease;
+		}
+		
+		.service-dropdown-trigger.active i {
+			transform: rotate(180deg);
+		}
+		
+		#serviceDropdownPlaceholder {
+			color: #6c757d;
+			font-size: 14px;
+		}
+		
+		.service-dropdown-menu {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			background: white;
+			border: 2px solid #007bff;
+			border-radius: 5px;
+			margin-top: 5px;
+			max-height: 300px;
+			overflow-y: auto;
+			z-index: 1000;
+			display: none;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+		}
+		
+		.service-dropdown-menu.show {
+			display: block;
+			animation: slideDown 0.3s ease;
+		}
+		
+		@keyframes slideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		
+		.service-option {
+			padding: 12px 15px;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+			font-size: 14px;
+			color: #333;
+			border-bottom: 1px solid #f0f0f0;
+		}
+		
+		.service-option:last-child {
+			border-bottom: none;
+		}
+		
+		.service-option:hover {
+			background-color: #f8f9fa;
+		}
+		
+		.service-option.selected {
+			background-color: #007bff;
+			color: white;
+			font-weight: 600;
+		}
+		
+		.service-option.selected:hover {
+			background-color: #0056b3;
+		}
+		
+		/* Selected Services Pills Styles */
+		.selected-services-pills {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			min-height: 35px;
+			padding: 8px;
+			background-color: #f8f9fa;
+			border-radius: 5px;
+			border: 2px dashed #dee2e6;
+		}
+		
+		.selected-services-pills:empty {
+			display: none;
+		}
+		
+		.service-pill {
+			display: inline-flex;
+			align-items: center;
+			background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+			color: white;
+			padding: 8px 12px;
+			border-radius: 20px;
+			font-size: 13px;
+			font-weight: 500;
+			box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+			animation: pillFadeIn 0.3s ease;
+			transition: all 0.2s ease;
+		}
+		
+		.service-pill:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+		}
+		
+		@keyframes pillFadeIn {
+			from {
+				opacity: 0;
+				transform: scale(0.8);
+			}
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+		
+		.service-pill-text {
+			margin-right: 8px;
+		}
+		
+		.service-pill-remove {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 18px;
+			height: 18px;
+			background-color: rgba(255, 255, 255, 0.3);
+			border-radius: 50%;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			font-weight: bold;
+			font-size: 14px;
+		}
+		
+		.service-pill-remove:hover {
+			background-color: rgba(255, 255, 255, 0.5);
+			transform: rotate(90deg);
+		}
+		
+		/* Validation styling for service dropdown */
+		.service-dropdown-wrapper.is-invalid .service-dropdown-trigger {
+			border-color: #dc3545;
+		}
+		
+		.service-dropdown-wrapper.is-valid .service-dropdown-trigger {
+			border-color: #28a745;
+		}
+		
+		/* Toast Notification Styles */
+		.toast-container {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			z-index: 9999;
+			max-width: 400px;
+		}
+		
+		.toast-notification {
+			background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+			color: white;
+			padding: 20px 25px;
+			border-radius: 10px;
+			box-shadow: 0 10px 40px rgba(37, 211, 102, 0.4);
+			margin-bottom: 15px;
+			animation: slideInRight 0.5s ease, slideOutRight 0.5s ease 4.5s;
+			display: flex;
+			align-items: start;
+			gap: 15px;
+		}
+		
+		@keyframes slideInRight {
+			from {
+				transform: translateX(400px);
+				opacity: 0;
+			}
+			to {
+				transform: translateX(0);
+				opacity: 1;
+			}
+		}
+		
+		@keyframes slideOutRight {
+			from {
+				transform: translateX(0);
+				opacity: 1;
+			}
+			to {
+				transform: translateX(400px);
+				opacity: 0;
+			}
+		}
+		
+		.toast-icon {
+			font-size: 32px;
+			flex-shrink: 0;
+		}
+		
+		.toast-content {
+			flex: 1;
+		}
+		
+		.toast-title {
+			font-size: 18px;
+			font-weight: 700;
+			margin: 0 0 8px 0;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+		
+		.toast-message {
+			font-size: 14px;
+			margin: 0;
+			opacity: 0.95;
+			line-height: 1.5;
+		}
+		
+		.toast-close {
+			background: rgba(255, 255, 255, 0.2);
+			border: none;
+			color: white;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			cursor: pointer;
+			font-size: 18px;
+			line-height: 1;
+			padding: 0;
+			transition: all 0.2s ease;
+			flex-shrink: 0;
+		}
+		
+		.toast-close:hover {
+			background: rgba(255, 255, 255, 0.3);
+			transform: rotate(90deg);
+		}
+		
+		/* Toast Responsive */
+		@media (max-width: 768px) {
+			.toast-container {
+				left: 10px;
+				right: 10px;
+				top: 10px;
+				max-width: none;
+			}
+			
+			.toast-notification {
+				padding: 15px 20px;
+			}
+			
+			.toast-icon {
+				font-size: 24px;
+			}
+			
+			.toast-title {
+				font-size: 16px;
+			}
+			
+			.toast-message {
+				font-size: 13px;
+			}
+		}
 	</style>
 
 </head>
@@ -299,6 +600,9 @@
         </div>
     </div>
     <!--PreLoader Ends-->
+	
+	<!-- Toast Notification Container -->
+	<div class="toast-container" id="toastContainer"></div>
 	
 	{% include 'Includes/navbar.html' %}
 	
@@ -324,7 +628,7 @@
 				<div class="col-lg-8 offset-lg-2">
 					<div class="appointment-form">
 						<h2>Book Your Appointment</h2>
-						<p>Fill out the form below to schedule your dental appointment. We'll get back to you within 24 hours to confirm your booking.</p>
+						<p>Fill out the form below to schedule your dental appointment via WhatsApp. Click the button to send your appointment request directly to our WhatsApp.</p>
 						
 						<form id="appointmentForm" method="post" action="{% url 'frontend:book_appointment' %}">
 							{% csrf_token %}
@@ -354,6 +658,21 @@
 									<div class="form-group">
 										<label for="phone">Phone Number *</label>
 										<input type="tel" class="form-control" id="phone" name="phone" required>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="city">City *</label>
+										<input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" required>
+									</div>
+								</div>
+								<div class="col-lg-6">
+									<div class="form-group">
+										<label for="province">Province/State *</label>
+										<input type="text" class="form-control" id="province" name="province" placeholder="Enter your province/state" required>
 									</div>
 								</div>
 							</div>
@@ -394,22 +713,32 @@
 							
 							<div class="form-group">
 								<label for="service">Service Required *</label>
-								<div class="select-wrapper">
-									<select class="form-control" id="service" name="service" required>
-										<option value="">Select Service</option>
-										<option value="general_checkup">General Checkup</option>
-										<option value="cleaning">Teeth Cleaning</option>
-										<option value="filling">Dental Filling</option>
-										<option value="extraction">Tooth Extraction</option>
-										<option value="crown">Dental Crown</option>
-										<option value="root_canal">Root Canal Treatment</option>
-										<option value="orthodontics">Orthodontics Consultation</option>
-										<option value="cosmetic">Cosmetic Dentistry</option>
-										<option value="emergency">Emergency Treatment</option>
-										<option value="other">Other</option>
-									</select>
-									<div class="select-display" id="service_display"></div>
+							
+							<!-- Selected Services Pills Container -->
+							<div id="selectedServicesPills" class="selected-services-pills mb-2"></div>
+							
+							<!-- Custom Multi-Select Dropdown -->
+							<div class="service-dropdown-wrapper">
+								<div class="service-dropdown-trigger" id="serviceDropdownTrigger">
+									<span id="serviceDropdownPlaceholder">Click to select services</span>
+									<i class="fas fa-chevron-down"></i>
 								</div>
+								<div class="service-dropdown-menu" id="serviceDropdownMenu">
+									<div class="service-option" data-value="general_checkup">General Checkup</div>
+									<div class="service-option" data-value="cleaning">Teeth Cleaning</div>
+									<div class="service-option" data-value="filling">Dental Filling</div>
+									<div class="service-option" data-value="extraction">Tooth Extraction</div>
+									<div class="service-option" data-value="crown">Dental Crown</div>
+									<div class="service-option" data-value="root_canal">Root Canal Treatment</div>
+									<div class="service-option" data-value="orthodontics">Orthodontics Consultation</div>
+									<div class="service-option" data-value="cosmetic">Cosmetic Dentistry</div>
+									<div class="service-option" data-value="emergency">Emergency Treatment</div>
+									<div class="service-option" data-value="other">Other</div>
+								</div>
+							</div>
+							
+							<!-- Hidden input to store selected services for form submission -->
+							<input type="hidden" id="selectedServicesInput" name="services" required>
 							</div>
 							
 							<div class="form-group">
@@ -427,7 +756,9 @@
 							</div>
 							
 							<div class="text-center">
-								<button type="submit" class="btn btn-primary btn-lg">Book Appointment</button>
+								<button type="submit" class="btn btn-primary btn-lg">
+									<i class="fab fa-whatsapp"></i> Book via WhatsApp
+								</button>
 							</div>
 						</form>
 					</div>
@@ -574,13 +905,142 @@
 	<!-- appointment form validation -->
 	<script>
 		$(document).ready(function() {
+			// Toast Notification Function
+			function showToast() {
+				var toast = $(`
+					<div class="toast-notification">
+						<div class="toast-icon">
+							<i class="fas fa-check-circle"></i>
+						</div>
+						<div class="toast-content">
+							<h4 class="toast-title">
+								<i class="fab fa-whatsapp"></i> Success!
+							</h4>
+							<p class="toast-message">We received your message. We will contact you shortly.</p>
+						</div>
+						<button class="toast-close" onclick="$(this).closest('.toast-notification').remove()">×</button>
+					</div>
+				`);
+				
+				$('#toastContainer').append(toast);
+				
+				// Auto-remove after 5 seconds
+				setTimeout(function() {
+					toast.remove();
+				}, 5000);
+			}
+			
+			// Multi-Select Service Functionality
+			var selectedServices = [];
+			
+			// Toggle dropdown
+			$('#serviceDropdownTrigger').on('click', function(e) {
+				e.stopPropagation();
+				$(this).toggleClass('active');
+				$('#serviceDropdownMenu').toggleClass('show');
+			});
+			
+			// Close dropdown when clicking outside
+			$(document).on('click', function(e) {
+				if (!$(e.target).closest('.service-dropdown-wrapper').length) {
+					$('#serviceDropdownTrigger').removeClass('active');
+					$('#serviceDropdownMenu').removeClass('show');
+				}
+			});
+			
+			// Handle service option click
+			$('.service-option').on('click', function(e) {
+				e.stopPropagation();
+				var value = $(this).data('value');
+				var text = $(this).text();
+				
+				if ($(this).hasClass('selected')) {
+					// Deselect
+					removeService(value);
+				} else {
+					// Select
+					addService(value, text);
+				}
+			});
+			
+			// Add service to selected list
+			function addService(value, text) {
+				// Check if already selected
+				if (selectedServices.some(s => s.value === value)) {
+					return;
+				}
+				
+				// Add to array
+				selectedServices.push({ value: value, text: text });
+				
+				// Update UI
+				updateServiceUI();
+			}
+			
+			// Remove service from selected list
+			function removeService(value) {
+				// Remove from array
+				selectedServices = selectedServices.filter(s => s.value !== value);
+				
+				// Update UI
+				updateServiceUI();
+			}
+			
+			// Update the UI (pills, dropdown options, hidden input)
+			function updateServiceUI() {
+				// Update pills container
+				var pillsContainer = $('#selectedServicesPills');
+				pillsContainer.empty();
+				
+				if (selectedServices.length > 0) {
+					selectedServices.forEach(function(service) {
+						var pill = $('<div class="service-pill"></div>');
+						pill.html(`
+							<span class="service-pill-text">${service.text}</span>
+							<span class="service-pill-remove" data-value="${service.value}">×</span>
+						`);
+						pillsContainer.append(pill);
+					});
+				}
+				
+				// Update dropdown options
+				$('.service-option').each(function() {
+					var value = $(this).data('value');
+					if (selectedServices.some(s => s.value === value)) {
+						$(this).addClass('selected');
+					} else {
+						$(this).removeClass('selected');
+					}
+				});
+				
+				// Update hidden input
+				var servicesArray = selectedServices.map(s => s.value);
+				$('#selectedServicesInput').val(servicesArray.join(','));
+				
+				// Update placeholder text
+				if (selectedServices.length > 0) {
+					$('#serviceDropdownPlaceholder').text(`${selectedServices.length} service(s) selected`);
+					$('.service-dropdown-wrapper').removeClass('is-invalid').addClass('is-valid');
+				} else {
+					$('#serviceDropdownPlaceholder').text('Click to select services');
+					$('.service-dropdown-wrapper').removeClass('is-valid');
+				}
+			}
+			
+			// Handle pill remove click
+			$(document).on('click', '.service-pill-remove', function(e) {
+				e.stopPropagation();
+				var value = $(this).data('value');
+				removeService(value);
+			});
+			
 			// Set minimum date to today
 			var today = new Date().toISOString().split('T')[0];
 			$('#appointmentDate').attr('min', today);
 			
 			// Initialize form state - show any pre-selected values
 			function initializeFormState() {
-				$('#appointmentTime, #service').each(function() {
+				$('#appointmentTime').each(function() {
 					var $this = $(this);
 					var selectedValue = $this.val();
 					var selectedText = $this.find('option:selected').text();
@@ -621,14 +1081,22 @@
 				// Clear previous error styling
 				$('.form-control').removeClass('is-invalid');
 				$('.error-message').remove();
+				$('.service-dropdown-wrapper').removeClass('is-invalid');
 				
-				// Validate required fields
-				$('input[required], select[required], textarea[required]').each(function() {
+				// Validate required fields (excluding the hidden services input)
+				$('input[required]:not(#selectedServicesInput), select[required], textarea[required]').each(function() {
 					if ($(this).val() === '') {
 						$(this).addClass('is-invalid');
 						isValid = false;
 					}
 				});
+				
+				// Validate services selection
+				if (selectedServices.length === 0) {
+					$('.service-dropdown-wrapper').addClass('is-invalid');
+					$('.service-dropdown-wrapper').after('<div class="error-message text-danger small mt-1">Please select at least one service</div>');
+					isValid = false;
+				}
 				
 				// Validate email format
 				var email = $('#email').val();
@@ -665,73 +1133,72 @@
 				
 				if (isValid) {
 					// Get form data
-					var formData = {
-						'first_name': $('#firstName').val(),
-						'last_name': $('#lastName').val(),
-						'email': $('#email').val(),
-						'phone': $('#phone').val(),
-						'appointment_date': $('#appointmentDate').val(),
-						'appointment_time': $('#appointmentTime').val(),
-						'service': $('#service').val(),
-						'message': $('#message').val(),
-						'csrfmiddlewaretoken': $('[name=csrfmiddlewaretoken]').val()
-					};
+					var firstName = $('#firstName').val();
+					var lastName = $('#lastName').val();
+					var email = $('#email').val();
+					var phone = $('#phone').val();
+					var city = $('#city').val();
+					var province = $('#province').val();
+					var appointmentDate = $('#appointmentDate').val();
+					var appointmentTime = $('#appointmentTime').val();
+					var selectedServicesText = selectedServices.map(s => s.text).join(', ');
+					var additionalMessage = $('#message').val();
 					
-					// Debug: Log form data to console
-					console.log('Form data being submitted:', formData);
-					
-					// Show loading state
-					$('button[type="submit"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Submitting...');
-					
-					// Clear any existing alerts
-					$('.alert').remove();
-					
-					$.ajax({
-						url: '{% url "frontend:book_appointment" %}',
-						type: 'POST',
-						data: formData,
-						success: function(response) {
-							console.log('Server response:', response);
-							if (response.success) {
-								// Show success message above the form instead of replacing it
-								$('#appointmentForm').prepend(`
-									<div class="alert alert-success alert-dismissible fade show" role="alert">
-										<h4><i class="fas fa-check-circle"></i> Appointment Request Submitted!</h4>
-										<p>${response.message}</p>
-										<p>If you need immediate assistance, please call us at <strong>+1 (555) 123-4567</strong></p>
-										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-									</div>
-								`);
-								
-								// Reset form
-								$('#appointmentForm')[0].reset();
-								$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
-								
-								// Scroll to top to show success message
-								$('html, body').animate({ scrollTop: 0 }, 500);
-							} else {
-								// Show error message
-								$('#appointmentForm').prepend(`
-									<div class="alert alert-danger alert-dismissible fade show" role="alert">
-										<strong>Error:</strong> ${response.message}
-										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-									</div>
-								`);
-								$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
-							}
-						},
-						error: function(xhr, status, error) {
-							console.log('AJAX Error:', xhr.responseText);
-							// Show error message
-							$('#appointmentForm').prepend(`
-								<div class="alert alert-danger alert-dismissible fade show" role="alert">
-									<strong>Error:</strong> Unable to submit appointment request. Please try again or call us directly.
-									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-								</div>
-							`);
-							$('button[type="submit"]').prop('disabled', false).html('Book Appointment');
-						}
+					// Format the appointment date nicely
+					var dateObj = new Date(appointmentDate);
+					var formattedDate = dateObj.toLocaleDateString('en-US', { 
+						weekday: 'long', 
+						year: 'numeric', 
+						month: 'long', 
+						day: 'numeric' 
 					});
+					
+					// Format time nicely
+					var timeText = $('#appointmentTime option:selected').text();
+					
+					// Create WhatsApp message
+					var whatsappMessage = `🦷 *Dental Appointment Request*\n\n`;
+					whatsappMessage += `👤 *Name:* ${firstName} ${lastName}\n`;
+					whatsappMessage += `📧 *Email:* ${email}\n`;
+					whatsappMessage += `📱 *Phone:* ${phone}\n`;
+					whatsappMessage += `🏙️ *City:* ${city}\n`;
+					whatsappMessage += `📍 *Province/State:* ${province}\n\n`;
+					whatsappMessage += `📅 *Preferred Date:* ${formattedDate}\n`;
+					whatsappMessage += `🕐 *Preferred Time:* ${timeText}\n\n`;
+					whatsappMessage += `💉 *Services Required:*\n${selectedServicesText}\n`;
+					
+					if (additionalMessage && additionalMessage.trim() !== '') {
+						whatsappMessage += `\n📝 *Additional Information:*\n${additionalMessage}`;
+					}
+					
+					// Encode the message for URL
+					var encodedMessage = encodeURIComponent(whatsappMessage);
+					
+					// ⚠️ IMPORTANT: Replace this with your clinic's WhatsApp number
+					// Format: country code + phone number (no + or - or spaces)
+					// Example: For USA +1 (555) 123-4567, use: 15551234567
+					// Example: For India +91 98765 43210, use: 919876543210
+					var whatsappNumber = '923009845333'; // ⚠️ CHANGE THIS NUMBER!
+					
+					// Create WhatsApp URL
+					var whatsappURL = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
+					
+					// Debug: Log the message
+					console.log('WhatsApp Message:', whatsappMessage);
+					console.log('WhatsApp URL:', whatsappURL);
+					
+					// Open WhatsApp
+					window.open(whatsappURL, '_blank');
+					
+					// Show toast notification
+					showToast();
+					
+					// Reset form after a short delay
+					setTimeout(function() {
+						$('#appointmentForm')[0].reset();
+						selectedServices = [];
+						updateServiceUI();
+					}, 1500);
 				} else {
 					// Show error message
 					$('#appointmentForm').prepend(`
@@ -764,7 +1231,7 @@
 			});
 			
 			// Visual feedback for form selections
-			$('#appointmentTime, #service').on('change', function() {
+			$('#appointmentTime').on('change', function() {
 				var $this = $(this);
 				var selectedValue = $this.val();
 				var selectedText = $this.find('option:selected').text();
@@ -806,7 +1273,7 @@
 			});
 			
 			// Handle focus and blur events for better dropdown visibility
-			$('#appointmentTime, #service').on('focus', function() {
+			$('#appointmentTime').on('focus', function() {
 				var $this = $(this);
 				var fieldId = $this.attr('id');
 				var displayId = fieldId + '_display';
@@ -815,7 +1282,7 @@
 				$('#' + displayId).hide();
 			});
 			
-			$('#appointmentTime, #service').on('blur', function() {
+			$('#appointmentTime').on('blur', function() {
 				var $this = $(this);
 				var fieldId = $this.attr('id');
 				var displayId = fieldId + '_display';

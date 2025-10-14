@@ -51,6 +51,7 @@ function addCardHeightStyles() {
     console.log('Card height styles applied');
 }
 
+BASE_URL = 'http://127.0.0.1:8001/api/';
 // News dynamic rendering functionality using template-based approach
 document.addEventListener('DOMContentLoaded', function() {
     console.log('News.js loaded and DOM ready');
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // API endpoint
-    const API_URL = 'http://127.0.0.1:8000/api/blog/posts/';
+    const API_URL = `${BASE_URL}blog/posts/`;
     
     // Function to populate news card from template
     function populateNewsCard(template, post, index) {
@@ -307,7 +308,7 @@ async function loadSingleNews() {
         }
         
         // Fetch the specific blog post
-        const response = await fetch(`http://127.0.0.1:8000/api/blog/posts/${blogId}/`);
+        const response = await fetch(`${BASE_URL}blog/posts/${blogId}/`);
         console.log('Single news API Response status:', response.status);
         
         if (!response.ok) {
@@ -427,7 +428,7 @@ async function updateSidebarRecentPosts() {
     
     try {
         // Fetch recent posts from API
-        const response = await fetch('http://127.0.0.1:8000/api/blog/posts/?limit=5');
+        const response = await fetch(`${BASE_URL}blog/posts/?limit=5`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -500,7 +501,7 @@ async function loadIndexNews() {
         }
         
         // Fetch latest 3 news articles
-        const response = await fetch('http://127.0.0.1:8000/api/blog/posts/?limit=3');
+        const response = await fetch(`${BASE_URL}blog/posts/?limit=3`);
         console.log('Index news API Response status:', response.status);
         
         if (!response.ok) {

@@ -77,8 +77,8 @@
 							<i class="fas fa-shipping-fast"></i>
 						</div>
 						<div class="content">
-							<h3>Free Shipping</h3>
-							<p>When order over $75</p>
+						<h3>Free Shipping</h3>
+						<p>When order over Rs 5000</p>
 						</div>
 					</div>
 				</div>
@@ -235,51 +235,65 @@
 	<div class="testimonail-section mt-150 mb-150">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-10 offset-lg-1 text-center">
-					<div class="testimonial-sliders">
-						<div class="single-testimonial-slider">
-							<div class="client-avater">
-								<img src="{% static 'img/avaters/avatar1.png' %}" alt="">
-							</div>
-							<div class="client-meta">
-								<h3>Saira Hakim <span>Local shop owner</span></h3>
-								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
-								</p>
-								<div class="last-icon">
-									<i class="fas fa-quote-right"></i>
-								</div>
-							</div>
-						</div>
-						<div class="single-testimonial-slider">
-							<div class="client-avater">
-								<img src="{% static 'img/avaters/avatar2.png' %}" alt="">
-							</div>
-							<div class="client-meta">
-								<h3>David Niph <span>Local shop owner</span></h3>
-								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
-								</p>
-								<div class="last-icon">
-									<i class="fas fa-quote-right"></i>
-								</div>
-							</div>
-						</div>
-						<div class="single-testimonial-slider">
-							<div class="client-avater">
-								<img src="{% static 'img/avaters/avatar3.png' %}" alt="">
-							</div>
-							<div class="client-meta">
-								<h3>Jacob Sikim <span>Local shop owner</span></h3>
-								<p class="testimonial-body">
-									" Sed ut perspiciatis unde omnis iste natus error veritatis et  quasi architecto beatae vitae dict eaque ipsa quae ab illo inventore Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
-								</p>
-								<div class="last-icon">
-									<i class="fas fa-quote-right"></i>
-								</div>
-							</div>
-						</div>
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="section-title">	
+						<h3><span class="orange-text">Customer</span> Reviews</h3>
+						<p>See what our satisfied customers have to say about their experience with DentalCom.</p>
 					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-10 offset-lg-1 text-center">
+					{% if reviews %}
+					<div class="testimonial-sliders">
+						{% for review in reviews %}
+						<div class="single-testimonial-slider">
+							<div class="client-avater">
+								{% with avatar_num=forloop.counter0|add:1 %}
+								{% with avatar_cycle=avatar_num|divisibleby:3 %}
+								{% if avatar_cycle %}
+									<img src="{% static 'img/avaters/avatar3.png' %}" alt="{{ review.user.get_full_name|default:review.user.username }}">
+								{% elif avatar_num|divisibleby:2 %}
+									<img src="{% static 'img/avaters/avatar2.png' %}" alt="{{ review.user.get_full_name|default:review.user.username }}">
+								{% else %}
+									<img src="{% static 'img/avaters/avatar1.png' %}" alt="{{ review.user.get_full_name|default:review.user.username }}">
+								{% endif %}
+								{% endwith %}
+								{% endwith %}
+							</div>
+							<div class="client-meta">
+								<h3>
+									{% if review.user.first_name and review.user.last_name %}
+										{{ review.user.first_name }} {{ review.user.last_name }}
+									{% else %}
+										{{ review.user.username }}
+									{% endif %}
+									<span>{% if review.is_verified_purchase %}Verified Customer{% else %}Customer{% endif %}</span>
+								</h3>
+								<div class="rating-stars" style="color: #F28123; font-size: 18px; margin: 10px 0;">
+									{{ review.rating_display }}
+								</div>
+								{% if review.title %}
+								<h4 style="font-weight: 600; margin-bottom: 10px;">{{ review.title }}</h4>
+								{% endif %}
+								<p class="testimonial-body">
+									" {{ review.comment }} "
+								</p>
+								<p style="font-size: 14px; color: #666; margin-top: 10px;">
+									<i class="fas fa-calendar"></i> {{ review.created_at|date:"M d, Y" }}
+								</p>
+								<div class="last-icon">
+									<i class="fas fa-quote-right"></i>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% else %}
+					<div class="col-12 text-center" style="padding: 50px 0;">
+						<p style="font-size: 18px; color: #666;">No reviews available yet. Be the first to leave a review!</p>
+					</div>
+					{% endif %}
 				</div>
 			</div>
 		</div>
@@ -422,6 +436,8 @@
 	<script src="{% static 'js/main.js' %}"></script>
 	<!-- news js -->
 	<script src="{% static 'js/news.js' %}"></script>
+	<!-- index js -->
+	<script src="{% static 'js/index.js' %}"></script>
 	
 	<!-- countdown timer initialization -->
 	<script>
