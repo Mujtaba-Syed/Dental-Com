@@ -59,6 +59,8 @@ class Review(models.Model):
     @property
     def rating_display(self):
         """Return rating as star display"""
+        if self.rating is None:
+            return '☆' * 5  # Show empty stars if no rating yet
         return '★' * self.rating + '☆' * (5 - self.rating)
     
     @property

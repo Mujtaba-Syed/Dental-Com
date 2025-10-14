@@ -161,36 +161,75 @@
 	</div>
 	<!-- end product section -->
 
-	<!-- cart banner section -->
-	<section class="cart-banner pt-100 pb-100">
-    	<div class="container">
-        	<div class="row clearfix">
-            	<!--Image Column-->
-            	<div class="image-column col-lg-6">
-                	<div class="image">
-                    	<div class="price-box">
-                        	<div class="inner-price">
-                                <span class="price">
-                                    <strong>30%</strong> <br> off per kg
-                                </span>
-                            </div>
-                        </div>
-                    	<img src="{% static 'img/a.jpg' %}" alt="">
-                    </div>
-                </div>
-                <!--Content Column-->
-                <div class="content-column col-lg-6">
-					<h3><span class="orange-text">Deal</span> of the month</h3>
-                    <h4>Hikan Strwaberry</h4>
-                    <div class="text">Quisquam minus maiores repudiandae nobis, minima saepe id, fugit ullam similique! Beatae, minima quisquam molestias facere ea. Perspiciatis unde omnis iste natus error sit voluptatem accusant</div>
-                    <!--Countdown Timer-->
-                    <div class="time-counter"><div class="time-countdown clearfix" data-countdown="2020/2/01"><div class="counter-column"><div class="inner"><span class="count">00</span>Days</div></div> <div class="counter-column"><div class="inner"><span class="count">00</span>Hours</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Mins</div></div>  <div class="counter-column"><div class="inner"><span class="count">00</span>Secs</div></div></div></div>
-                	<a href="{% url 'frontend:cart' %}" class="cart-btn mt-3"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
-                </div>
-            </div>
-        </div>
+	<!-- full screen banner section -->
+	<section class="fullscreen-banner" style="position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+		<!-- Background Image -->
+		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;">
+			<img src="{% static 'img/deal.png' %}" alt="Deal of the month" style="width: 100%; height: 100%; object-fit: cover;">
+		</div>
+		
+		<!-- Overlay for better text readability -->
+		<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 2;"></div>
+		
+		<!-- Content Overlay -->
+		<div class="container" style="position: relative; z-index: 3;">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center text-white">
+					<!-- Price Badge -->
+					<!-- <div class="price-box" style="display: inline-block; background: #F28123; border-radius: 50%; width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(242, 129, 35, 0.4);">
+						<div class="inner-price">
+							<span class="price" style="color: white; font-size: 24px; font-weight: bold; line-height: 1.4;">
+								<strong style="font-size: 36px;">Get Off on your </strong> <br> first appointment
+							</span>
+						</div>
+					</div>
+					 -->
+					<!-- Title -->
+					<h3 style="font-size: 48px; font-weight: 700; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);"><span class="orange-text">Deal</span> <span style="color: white;">of the month</span></h3>
+					<h4 style="font-size: 32px; color: white; margin-bottom: 25px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Scalling and Polishing</h4>
+					
+					<!-- Description -->
+					<div class="text" style="font-size: 18px; color: white; margin-bottom: 30px; max-width: 700px; margin-left: auto; margin-right: auto; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
+						Get off on your first appointment with us and enjoy the best dental care services.
+					</div>
+					
+					<!-- Countdown Timer -->
+					<div class="time-counter" style="margin-bottom: 30px;">
+						<div class="time-countdown clearfix" data-countdown="2020/2/01" style="display: flex; justify-content: center; gap: 20px;">
+							<div class="counter-column" style="background: rgba(255,255,255,0.9); padding: 20px 30px; border-radius: 10px; min-width: 100px;">
+								<div class="inner">
+									<span class="count" style="display: block; font-size: 36px; font-weight: bold; color: #F28123;">00</span>
+									<span style="font-size: 14px; color: #333;">Days</span>
+								</div>
+							</div>
+							<div class="counter-column" style="background: rgba(255,255,255,0.9); padding: 20px 30px; border-radius: 10px; min-width: 100px;">
+								<div class="inner">
+									<span class="count" style="display: block; font-size: 36px; font-weight: bold; color: #F28123;">00</span>
+									<span style="font-size: 14px; color: #333;">Hours</span>
+								</div>
+							</div>
+							<div class="counter-column" style="background: rgba(255,255,255,0.9); padding: 20px 30px; border-radius: 10px; min-width: 100px;">
+								<div class="inner">
+									<span class="count" style="display: block; font-size: 36px; font-weight: bold; color: #F28123;">00</span>
+									<span style="font-size: 14px; color: #333;">Mins</span>
+								</div>
+							</div>
+							<div class="counter-column" style="background: rgba(255,255,255,0.9); padding: 20px 30px; border-radius: 10px; min-width: 100px;">
+								<div class="inner">
+									<span class="count" style="display: block; font-size: 36px; font-weight: bold; color: #F28123;">00</span>
+									<span style="font-size: 14px; color: #333;">Secs</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Call to Action Button -->
+					<a href="{% url 'frontend:appointment' %}" class="cart-btn mt-3" style="display: inline-block; padding: 15px 40px; font-size: 18px; text-transform: uppercase; font-weight: bold;"><i class="fas fa-calendar-alt"></i> Book Appointment</a>
+				</div>
+			</div>
+		</div>
     </section>
-    <!-- end cart banner section -->
+    <!-- end full screen banner section -->
 
 	<!-- testimonail-section -->
 	<div class="testimonail-section mt-150 mb-150">
@@ -383,6 +422,60 @@
 	<script src="{% static 'js/main.js' %}"></script>
 	<!-- news js -->
 	<script src="{% static 'js/news.js' %}"></script>
+	
+	<!-- countdown timer initialization -->
+	<script>
+		$(document).ready(function() {
+			// Set countdown to 30 days from now (you can change this date)
+			// var countdownDate = new Date('2025/12/31');
+			var countdownDate = new Date();
+			countdownDate.setDate(countdownDate.getDate() + 30); // 30 days from now
+			
+			// Format: YYYY/MM/DD
+			var targetDate = countdownDate.getFullYear() + '/' + 
+							(countdownDate.getMonth() + 1) + '/' + 
+							countdownDate.getDate();
+			
+			// Initialize countdown
+			$('.time-countdown').attr('data-countdown', targetDate);
+			
+			// Update countdown every second
+			function updateCountdown() {
+				var now = new Date().getTime();
+				var target = new Date(targetDate).getTime();
+				var distance = target - now;
+				
+				if (distance < 0) {
+					// If countdown is finished
+					$('.count').text('00');
+					return;
+				}
+				
+				// Calculate time units
+				var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+				
+				// Format numbers to always show 2 digits
+				days = String(days).padStart(2, '0');
+				hours = String(hours).padStart(2, '0');
+				minutes = String(minutes).padStart(2, '0');
+				seconds = String(seconds).padStart(2, '0');
+				
+				// Update the display
+				var counters = $('.counter-column .count');
+				$(counters[0]).text(days);
+				$(counters[1]).text(hours);
+				$(counters[2]).text(minutes);
+				$(counters[3]).text(seconds);
+			}
+			
+			// Update immediately and then every second
+			updateCountdown();
+			setInterval(updateCountdown, 1000);
+		});
+	</script>
 
 </body>
 </html>
