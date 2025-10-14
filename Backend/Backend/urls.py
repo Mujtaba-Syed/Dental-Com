@@ -27,7 +27,8 @@ urlpatterns = [
     path('api/', include('Service.urls')),
     path('api/blog/', include('Blog.urls')),
     path('api/reviews/', include('Review.urls')),
-    path('api/auth/', include('Authentication.urls'))
+    path('api/auth/', include('Authentication.urls')),
+    path('api/cart/', include('Cart.urls'))
 ]
 
 # Serve media and static files in development
