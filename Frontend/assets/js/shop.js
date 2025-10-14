@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <h3>${product.name}</h3>
                 <p class="product-price">
-                    ${originalPrice ? `<span class="original-price">$${originalPrice.toFixed(2)}</span>` : ''}
-                    <span class="current-price">$${displayPrice.toFixed(2)}</span>
+                    ${originalPrice ? `<span class="original-price">Rs ${originalPrice.toFixed(2)}</span>` : ''}
+                    <span class="current-price">Rs ${displayPrice.toFixed(2)}</span>
                 </p>
                 <a href="/cart/" class="cart-btn" data-product-id="${product.id}">
                     <i class="fas fa-shopping-cart"></i> Add to Cart
