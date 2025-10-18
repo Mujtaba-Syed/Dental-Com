@@ -215,6 +215,12 @@
 	<script src="{% static 'js/sticker.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'js/main.js' %}"></script>
+	<!-- Django config -->
+	<script>
+		window.DJANGO_CONFIG = {
+			BASE_URL: '{{ API_BASE_URL }}'
+		};
+	</script>
 	<!-- news js -->
 	<script src="{% static 'js/news.js' %}"></script>
 

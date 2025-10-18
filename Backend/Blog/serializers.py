@@ -3,70 +3,100 @@ from django.contrib.auth.models import User
 from .models import BlogPost, BlogCategory, BlogTag
 
 
-class UserSerializer(serializers.ModelSerializer):
-    """Serializer for User model"""
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'email']
-        read_only_fields = ['id']
+class UserSerializer(serializers.Serializer):
+    """Custom serializer for User model to avoid DRF introspection issues"""
+    id = serializers.IntegerField(read_only=True)
+    username = serializers.CharField(max_length=150, read_only=True)
+    first_name = serializers.CharField(max_length=150, read_only=True)
+    last_name = serializers.CharField(max_length=150, read_only=True)
+    email = serializers.EmailField(read_only=True)
 
 
-class BlogCategorySerializer(serializers.ModelSerializer):
-    """Serializer for BlogCategory model"""
-    class Meta:
-        model = BlogCategory
-        fields = ['id', 'name', 'slug', 'description', 'created_at']
-        read_only_fields = ['id', 'slug', 'created_at']
+class BlogCategorySerializer(serializers.Serializer):
+    """Custom serializer for BlogCategory model to avoid DRF introspection issues"""
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(max_length=100, read_only=True)
+    slug = serializers.SlugField(max_length=100, read_only=True)
+    description = serializers.CharField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
 
 
-class BlogTagSerializer(serializers.ModelSerializer):
-    """Serializer for BlogTag model"""
-    class Meta:
-        model = BlogTag
-        fields = ['id', 'name', 'slug', 'created_at']
-        read_only_fields = ['id', 'slug', 'created_at']
+class BlogTagSerializer(serializers.Serializer):
+    """Custom serializer for BlogTag model to avoid DRF introspection issues"""
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(max_length=50, read_only=True)
+    slug = serializers.SlugField(max_length=50, read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
 
 
-class BlogPostListSerializer(serializers.ModelSerializer):
-    """Serializer for BlogPost list view (simplified)"""
+class BlogPostListSerializer(serializers.Serializer):
+    """Custom serializer for BlogPost list view to avoid DRF introspection issues"""
+    id = serializers.IntegerField(read_only=True)
+    title = serializers.CharField(max_length=200)
+    slug = serializers.SlugField(max_length=200, read_only=True)
+    description = serializers.CharField()
+    image = serializers.ImageField(read_only=True)
+    meta_title = serializers.CharField(max_length=60, read_only=True)
+    meta_description = serializers.CharField(max_length=160, read_only=True)
     author = UserSerializer(read_only=True)
+    status = serializers.CharField(max_length=10, read_only=True)
+    featured = serializers.BooleanField(read_only=True)
+    view_count = serializers.IntegerField(read_only=True)
+    number_of_likes = serializers.IntegerField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+    published_at = serializers.DateTimeField(read_only=True)
     category = BlogCategorySerializer(read_only=True)
-    tags = BlogTagSerializer(many=True, read_only=True)
+    tags = serializers.SerializerMethodField()
     
-    class Meta:
-        model = BlogPost
-        fields = [
-            'id', 'title', 'slug', 'description', 'image', 'meta_title',
-            'meta_description', 'author', 'status', 'featured', 'view_count', 'number_of_likes',
-            'created_at', 'updated_at', 'published_at', 'category', 'tags'
-        ]
-        read_only_fields = ['id', 'slug', 'author', 'view_count', 'number_of_likes', 'created_at', 'updated_at']
+    def get_tags(self, obj):
+        """Get tags as a list of serialized tag data"""
+        return BlogTagSerializer(obj.tags.all(), many=True).data
 
 
-class BlogPostDetailSerializer(serializers.ModelSerializer):
-    """Serializer for BlogPost detail view (full content)"""
-    author = UserSerializer(read_only=True)
-    category = BlogCategorySerializer(read_only=True)
-    tags = BlogTagSerializer(many=True, read_only=True)
+class BlogPostDetailSerializer(serializers.Serializer):
+    """Custom serializer for BlogPost detail view to avoid DRF introspection issues"""
+    id = serializers.IntegerField(read_only=True)
+    title = serializers.CharField(max_length=200)
+    slug = serializers.SlugField(max_length=200, read_only=True)
+    description = serializers.CharField()
+    content = serializers.CharField()
+    image = serializers.ImageField(read_only=True)
+    meta_title = serializers.CharField(max_length=60, read_only=True)
+    meta_description = serializers.CharField(max_length=160, read_only=True)
+    meta_keywords = serializers.CharField(max_length=255, read_only=True)
     keywords_list = serializers.SerializerMethodField()
+    author = UserSerializer(read_only=True)
+    status = serializers.CharField(max_length=10, read_only=True)
+    featured = serializers.BooleanField(read_only=True)
+    view_count = serializers.IntegerField(read_only=True)
+    number_of_likes = serializers.IntegerField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True)
+    published_at = serializers.DateTimeField(read_only=True)
+    category = BlogCategorySerializer(read_only=True)
+    tags = serializers.SerializerMethodField()
     
-    class Meta:
-        model = BlogPost
-        fields = [
-            'id', 'title', 'slug', 'description', 'content', 'image',
-            'meta_title', 'meta_description', 'meta_keywords', 'keywords_list',
-            'author', 'status', 'featured', 'view_count', 'number_of_likes', 'created_at',
-            'updated_at', 'published_at', 'category', 'tags'
-        ]
-        read_only_fields = ['id', 'slug', 'author', 'view_count', 'created_at', 'updated_at']
+    def get_tags(self, obj):
+        """Get tags as a list of serialized tag data"""
+        return BlogTagSerializer(obj.tags.all(), many=True).data
     
     def get_keywords_list(self, obj):
         """Return meta keywords as a list"""
         return obj.get_keywords_list()
 
 
-class BlogPostCreateUpdateSerializer(serializers.ModelSerializer):
-    """Serializer for creating and updating BlogPost"""
+class BlogPostCreateUpdateSerializer(serializers.Serializer):
+    """Custom serializer for creating and updating BlogPost to avoid DRF introspection issues"""
+    title = serializers.CharField(max_length=200)
+    description = serializers.CharField()
+    content = serializers.CharField()
+    image = serializers.ImageField(required=False, allow_null=True)
+    meta_title = serializers.CharField(max_length=60, required=False, allow_blank=True)
+    meta_description = serializers.CharField(max_length=160, required=False, allow_blank=True)
+    meta_keywords = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    status = serializers.ChoiceField(choices=BlogPost.STATUS_CHOICES, default='draft')
+    featured = serializers.BooleanField(default=False)
     category_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
     tag_ids = serializers.ListField(
         child=serializers.IntegerField(),
@@ -74,14 +104,6 @@ class BlogPostCreateUpdateSerializer(serializers.ModelSerializer):
         required=False,
         allow_empty=True
     )
-    
-    class Meta:
-        model = BlogPost
-        fields = [
-            'title', 'description', 'content', 'image', 'meta_title',
-            'meta_description', 'meta_keywords', 'status', 'featured',
-            'category_id', 'tag_ids'
-        ]
     
     def validate_meta_title(self, value):
         """Validate meta title length"""

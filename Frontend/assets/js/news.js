@@ -51,7 +51,8 @@ function addCardHeightStyles() {
     console.log('Card height styles applied');
 }
 
-BASE_URL = 'http://127.0.0.1:8001/api/';
+// Get BASE_URL from Django template variable or use default
+const BASE_URL = window.DJANGO_CONFIG?.BASE_URL || 'http://127.0.0.1:8000/api/';
 // News dynamic rendering functionality using template-based approach
 document.addEventListener('DOMContentLoaded', function() {
     console.log('News.js loaded and DOM ready');

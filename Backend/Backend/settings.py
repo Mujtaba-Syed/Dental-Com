@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_q!!yp58$1pqb6(!)z*nnr$26m+#e0un*a^r^om!&185vp^4#7'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-_q!!yp58$1pqb6(!)z*nnr$26m+#e0un*a^r^om!&185vp^4#7')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
+
+# API Configuration
+BASE_URL = config('BASE_URL', default='http://127.0.0.1:8000')
+API_BASE_URL = config('API_BASE_URL', default='http://127.0.0.1:8000/api/')
 
 
 # Application definition
@@ -71,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Backend.context_processors.api_config',
             ],
         },
     },
