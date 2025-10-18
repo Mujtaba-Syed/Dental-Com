@@ -115,10 +115,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success message
             alert('Logged in as guest! You can now add items to cart.');
             
+            // Refresh navbar cart count after login
+            if (window.checkAuthAndRefreshCart) {
+                window.checkAuthAndRefreshCart();
+            }
+            
             // If there was a pending product, add it to cart
             if (pendingProductId) {
-                addToCart(pendingProductId);
+                console.log('🛒 [GUEST LOGIN] Adding pending product to cart:', pendingProductId);
+                await addToCart(pendingProductId);
+                console.log('🛒 [GUEST LOGIN] Pending product added successfully');
                 pendingProductId = null;
+                console.log('🛒 [GUEST LOGIN] Pending product ID cleared');
+            } else {
+                console.log('🛒 [GUEST LOGIN] No pending product to add');
             }
         } else {
             alert('Guest login failed: ' + result.message);
@@ -151,10 +161,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success message
             alert('Google login successful!');
             
+            // Refresh navbar cart count after login
+            if (window.checkAuthAndRefreshCart) {
+                window.checkAuthAndRefreshCart();
+            }
+            
             // If there was a pending product, add it to cart
             if (pendingProductId) {
-                addToCart(pendingProductId);
+                console.log('🛒 [GOOGLE LOGIN] Adding pending product to cart:', pendingProductId);
+                await addToCart(pendingProductId);
+                console.log('🛒 [GOOGLE LOGIN] Pending product added successfully');
                 pendingProductId = null;
+                console.log('🛒 [GOOGLE LOGIN] Pending product ID cleared');
+            } else {
+                console.log('🛒 [GOOGLE LOGIN] No pending product to add');
             }
         } else {
             alert('Google login failed: ' + result.message);
@@ -162,41 +182,197 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Add to cart function
-    function addToCart(productId) {
-        // Here you would implement your cart logic
-        console.log('Adding product to cart:', productId);
-        // Example: Make API call to add product to cart
-        // Or update local storage cart
-        alert('Product added to cart!');
+    async function addToCart(productId) {
+        try {
+            console.log('🛒 [ADD TO CART] Starting add to cart process...');
+            console.log('🛒 [ADD TO CART] Product ID:', productId);
+            console.log('🛒 [ADD TO CART] Product ID type:', typeof productId);
+            
+            // Get CSRF token
+            const csrfToken = getCSRFToken();
+            console.log('🛒 [ADD TO CART] CSRF Token found:', csrfToken ? 'Yes' : 'No');
+            
+            // Get access token
+            const accessToken = AuthManager.getAccessToken();
+            console.log('🛒 [ADD TO CART] Access Token found:', accessToken ? 'Yes' : 'No');
+            console.log('🛒 [ADD TO CART] Access Token preview:', accessToken ? accessToken.substring(0, 20) + '...' : 'None');
+            
+            // Prepare request payload
+            const payload = {
+                product_id: parseInt(productId),
+                quantity: 1
+            };
+            console.log('🛒 [ADD TO CART] Request payload:', payload);
+            
+            // Prepare request headers
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+                'X-CSRFToken': csrfToken,
+            };
+            console.log('🛒 [ADD TO CART] Request headers:', headers);
+            
+            console.log('🛒 [ADD TO CART] Making API call to /api/cart/add/...');
+            
+            // Make API call to add product to cart
+            const response = await fetch('/api/cart/add/', {
+                method: 'POST',
+                headers: headers,
+                credentials: 'same-origin',
+                body: JSON.stringify(payload)
+            });
+            
+            console.log('🛒 [ADD TO CART] Response received!');
+            console.log('🛒 [ADD TO CART] Response status:', response.status);
+            console.log('🛒 [ADD TO CART] Response status text:', response.statusText);
+            console.log('🛒 [ADD TO CART] Response headers:', Object.fromEntries(response.headers.entries()));
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('🛒 [ADD TO CART] HTTP Error Response:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+            
+            const result = await response.json();
+            console.log('🛒 [ADD TO CART] ✅ SUCCESS! Add to cart response:', result);
+            console.log('🛒 [ADD TO CART] Cart data:', result.cart);
+            console.log('🛒 [ADD TO CART] Message:', result.message);
+            
+            // Show success notification
+            showNotification('Product added to cart successfully!', 'success');
+            console.log('🛒 [ADD TO CART] Success notification shown');
+            
+            // Update cart count in navbar if it exists
+            updateCartCount();
+            console.log('🛒 [ADD TO CART] Cart count updated');
+            
+            console.log('🛒 [ADD TO CART] ✅ Process completed successfully!');
+            
+        } catch (error) {
+            console.error('🛒 [ADD TO CART] ❌ FAILED! Error details:', error);
+            console.error('🛒 [ADD TO CART] Error message:', error.message);
+            console.error('🛒 [ADD TO CART] Error stack:', error.stack);
+            showNotification('Failed to add product to cart. Please try again.', 'error');
+            console.log('🛒 [ADD TO CART] Error notification shown');
+        }
+    }
+    
+    // Get CSRF token function
+    function getCSRFToken() {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'csrftoken') {
+                return value;
+            }
+        }
+        return null;
+    }
+    
+    // Show notification function
+    function showNotification(message, type = 'info') {
+        console.log('🔔 [NOTIFICATION] Showing notification:', { message, type });
         
-        // Redirect to cart page or update cart count
-        // window.location.href = '/cart/';
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.textContent = message;
+        
+        // Style the notification
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        `;
+
+        // Set background color based on type
+        switch (type) {
+            case 'success':
+                notification.style.backgroundColor = '#28a745';
+                break;
+            case 'error':
+                notification.style.backgroundColor = '#dc3545';
+                break;
+            default:
+                notification.style.backgroundColor = '#17a2b8';
+        }
+
+        document.body.appendChild(notification);
+
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+    
+    // Update cart count in navbar
+    function updateCartCount() {
+        console.log('🛒 [CART COUNT] Updating cart count in navbar...');
+        
+        // Use the global navbar manager to refresh cart count
+        if (window.refreshCartCount) {
+            window.refreshCartCount();
+            console.log('🛒 [CART COUNT] Cart count refreshed via navbar manager');
+        } else {
+            console.warn('🛒 [CART COUNT] Navbar manager not available');
+        }
+        
+        console.log('🛒 [CART COUNT] Cart count update completed');
     }
     
     // Intercept Add to Cart button clicks
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', async function(e) {
         const cartBtn = e.target.closest('.cart-btn');
         if (cartBtn) {
+            console.log('🛒 [CLICK] Add to Cart button clicked!');
+            console.log('🛒 [CLICK] Button element:', cartBtn);
+            console.log('🛒 [CLICK] Button HTML:', cartBtn.outerHTML);
+            
             e.preventDefault();
             
             const productId = cartBtn.getAttribute('data-product-id');
+            console.log('🛒 [CLICK] Product ID from button:', productId);
+            console.log('🛒 [CLICK] Product ID type:', typeof productId);
             
             // Check if user is authenticated
-            if (!AuthManager.isAuthenticated()) {
+            const isAuthenticated = AuthManager.isAuthenticated();
+            console.log('🛒 [CLICK] User authenticated:', isAuthenticated);
+            
+            if (!isAuthenticated) {
+                console.log('🛒 [CLICK] User not authenticated, storing pending product and showing auth modal');
                 // Store the product ID to add after login
                 pendingProductId = productId;
+                console.log('🛒 [CLICK] Pending product ID set:', pendingProductId);
                 // Show authentication modal
                 $('#authModal').modal('show');
+                console.log('🛒 [CLICK] Authentication modal shown');
             } else {
+                console.log('🛒 [CLICK] User authenticated, proceeding to add to cart');
                 // User is authenticated, add to cart directly
-                addToCart(productId);
+                await addToCart(productId);
+                console.log('🛒 [CLICK] Add to cart process completed');
             }
         }
     });
     
     // Debug: Check if products are loaded
-    // console.log('Shop.js loaded. Products:', products);
-    // console.log('Product container:', productContainer);
+    console.log('🛒 [INIT] Shop.js loaded successfully!');
+    console.log('🛒 [INIT] Products loaded:', products ? products.length : 'No products');
+    console.log('🛒 [INIT] Product container:', productContainer ? 'Found' : 'Not found');
+    console.log('🛒 [INIT] AuthManager available:', typeof AuthManager !== 'undefined');
+    console.log('🛒 [INIT] User authenticated:', AuthManager.isAuthenticated());
     
     // Render products function
     function renderProducts(productsToRender = products) {

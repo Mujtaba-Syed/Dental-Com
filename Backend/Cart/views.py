@@ -207,3 +207,16 @@ class ClearCartAPIView(APIView):
             'message': 'Cart cleared successfully',
             'cart': cart_serializer.data
         }, status=status.HTTP_200_OK)
+
+
+class GetItemCountAPIView(APIView):
+    """
+    Get the number of quantity of items in the cart
+    GET /api/cart/item-count/
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        """Get the number of quantity of total items in the cart"""
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        return Response({'total_quantity': sum(item.quantity for item in cart.items.all())}, status=status.HTTP_200_OK)
