@@ -180,3 +180,40 @@ GOOGLE_OAUTH_CLIENT_SECRET = 'YOUR_GOOGLE_CLIENT_SECRET'  # Replace with your Go
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.parent / 'Frontend' / 'media'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {  # show ALL logs in console
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        # enable logs from your app explicitly
+        'Service': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Service.admin': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'Service.models': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}

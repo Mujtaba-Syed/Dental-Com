@@ -1,5 +1,9 @@
+import logging
 from django.contrib import admin
+from django.db import transaction
 from .models import Service, ServiceImage
+
+logger = logging.getLogger(__name__)
 
 class ServiceImageInline(admin.TabularInline):
     model = ServiceImage
