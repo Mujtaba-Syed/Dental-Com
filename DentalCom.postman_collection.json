@@ -15,7 +15,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/products/",
+							"raw": "http://127.0.0.1:8001/api/products/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -23,7 +23,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8001",
 							"path": [
 								"api",
 								"products",
@@ -528,6 +528,288 @@
 								"1",
 								"reviews",
 								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/reviews/reviews-list/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"reviews-list",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Get cart of a user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}api/cart/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"product_id\": 2, \r\n\"quantity\": 1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}api/cart/add/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								"add",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Increase an item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"product_id\": 2, \r\n\"quantity\": 1}"
+						},
+						"url": {
+							"raw": "{{localhost}}api/cart/increase/1/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								"increase",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Decrease an item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}api/cart/decrease/1/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								"decrease",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add quantity of product",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}api/cart/update/3/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								"update",
+								"3",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove an item from cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}api/cart/remove/2/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								"remove",
+								"2",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clear the cart",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYwODgxMjYyLCJpYXQiOjE3NjA3OTQ4NjIsImp0aSI6IjVkNmY1MmVlNTc1ZTQwYjY5OGFjYTA2MjZlZGRjMTMzIiwidXNlcl9pZCI6ImQwODI5YTZjLTAxNjctNDZlNC1iMzkyLTQxYjE1ZDcxYTA1MCJ9.nHBVODbxzQnxqvYJ1e9eTI2Nl4plFiL_mSsPqJ8H7f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}api/cart/clear/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"cart",
+								"clear",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}api/auth/guest-login/",
+							"host": [
+								"{{localhost}}api"
+							],
+							"path": [
+								"auth",
+								"guest-login",
 								""
 							]
 						}
