@@ -209,7 +209,7 @@ createCartItemRow(item) {
                 <td colspan="6" class="text-center" style="padding: 50px;">
                     <h4>Your cart is empty</h4>
                     <p>Add some products to get started!</p>
-                    <a href="/shop.html" class="boxed-btn">Continue Shopping</a>
+                    <a href="/shop/" class="boxed-btn">Continue Shopping</a>
                 </td>
             </tr>
         `;

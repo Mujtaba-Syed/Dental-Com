@@ -596,91 +596,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add to cart functionality
-    function setupAddToCart() {
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.cart-btn')) {
-                e.preventDefault();
-                const productId = e.target.closest('.cart-btn').getAttribute('data-product-id');
-                addToCart(productId);
-            }
-        });
-    }
-    
-    // Add to cart function
-    function addToCart(productId) {
-        // Get existing cart from localStorage
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        
-        // Check if product already in cart
-        const existingItem = cart.find(item => item.productId === productId);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            const product = products.find(p => p.id == productId);
-            if (product) {
-                cart.push({
-                    productId: productId,
-                    name: product.name,
-                    price: product.sale_price || product.price,
-                    image: (product.primary_image && product.primary_image.image) ? product.primary_image.image : 
-                           ((product.images && product.images.length > 0) ? product.images[0].image : '/static/img/products/product-img-1.jpg'),
-                    quantity: 1
-                });
-            }
-        }
-        
-        // Save cart to localStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        // Show success message
-        showNotification('Product added to cart!', 'success');
-        
-        // Update cart count if element exists
-        updateCartCount();
-    }
-    
-    // Show notification
-    function showNotification(message, type = 'info') {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${type === 'success' ? '#4CAF50' : '#2196F3'};
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            z-index: 9999;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        `;
-        notification.textContent = message;
-        
-        document.body.appendChild(notification);
-        
-        // Remove notification after 3 seconds
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 3000);
-    }
-    
-    // Update cart count
-    function updateCartCount() {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        
-        // Update cart count in navbar if it exists
-        const cartCountElement = document.querySelector('.cart-count');
-        if (cartCountElement) {
-            cartCountElement.textContent = totalItems;
-        }
-    }
-    
     // Pagination functionality
     function setupPagination() {
         const paginationContainer = document.querySelector('.pagination-wrap ul');
@@ -794,7 +709,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const firstPageProducts = products.slice(0, itemsPerPage);
         renderProducts(firstPageProducts);
         setupFilters();
-        setupAddToCart();
         updateCartCount();
     }
     
