@@ -15,4 +15,5 @@ urlpatterns = [
     path('update/<int:cart_item_id>/', views.UpdateCartItemAPIView.as_view(), name='update_cart_item'),
     path('remove/<int:cart_item_id>/', views.RemoveFromCartAPIView.as_view(), name='remove_from_cart'),
     path('clear/', views.ClearCartAPIView.as_view(), name='clear_cart'),
+    path('item-count/', views.GetItemCountAPIView.as_view(), name='get_item_count'),
 ]
