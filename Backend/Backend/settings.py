@@ -29,8 +29,9 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=lambda v: [s.strip() for s in v.split(',')])
 
 # API Configuration
-BASE_URL = config('BASE_URL', default='http://127.0.0.1:8000')
-API_BASE_URL = config('API_BASE_URL', default='http://127.0.0.1:8000/api/')
+# Use relative URLs to avoid CORS issues when frontend and backend are on the same domain
+BASE_URL = config('BASE_URL', default='')
+API_BASE_URL = config('API_BASE_URL', default='/api/')
 
 
 # Application definition
@@ -180,8 +181,8 @@ SIMPLE_JWT = {
 }
 
 # Google OAuth Settings
-GOOGLE_OAUTH_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'  # Replace with your Google OAuth Client ID
-GOOGLE_OAUTH_CLIENT_SECRET = 'YOUR_GOOGLE_CLIENT_SECRET'  # Replace with your Google OAuth Client Secret
+GOOGLE_OAUTH_CLIENT_ID = config('GOOGLE_OAUTH_CLIENT_ID', default='')  # Add your Google OAuth Client ID in .env file
+GOOGLE_OAUTH_CLIENT_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET', default='')  # Add your Google OAuth Client Secret in .env file
 
 # Media files
 MEDIA_URL = '/media/'

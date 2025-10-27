@@ -91,7 +91,8 @@ const AuthManager = {
 };
 
 // Google Sign-In configuration
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // Replace with your Google Client ID
+// Get the client ID from Django context, fallback to empty string if not configured
+const GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
 
 // Shop page functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -139,16 +140,46 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Google Login Button Handler
-    document.getElementById('googleLoginBtn').addEventListener('click', function() {
-        // Initialize Google Sign-In
-        google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
-            callback: handleGoogleSignIn
-        });
-        
-        // Prompt the user to select a Google Account and grant consent
-        google.accounts.id.prompt();
-    });
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    if (googleLoginBtn) {
+        if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === '') {
+            // Hide the Google login button if OAuth is not configured
+            googleLoginBtn.style.display = 'none';
+            console.log('🛒 [AUTH] Google login disabled - OAuth not configured. Please add GOOGLE_OAUTH_CLIENT_ID to your .env file');
+        } else {
+            console.log('🔐 [SETUP] Google Client ID configured:', GOOGLE_CLIENT_ID);
+            
+            googleLoginBtn.addEventListener('click', function() {
+                console.log('🛒 [GOOGLE LOGIN] Initializing Google Sign-In...');
+                console.log('🛒 [GOOGLE LOGIN] Using Client ID:', GOOGLE_CLIENT_ID);
+                
+                try {
+                    // Initialize Google Sign-In
+                    google.accounts.id.initialize({
+                        client_id: GOOGLE_CLIENT_ID,
+                        callback: handleGoogleSignIn,
+                        error_callback: function(error) {
+                            console.error('🛒 [GOOGLE LOGIN] Initialization error:', error);
+                        }
+                    });
+                    
+                    console.log('🛒 [GOOGLE LOGIN] Google Sign-In initialized, prompting user...');
+                    
+                    // Prompt the user to select a Google Account and grant consent
+                    google.accounts.id.prompt((notification) => {
+                        console.log('🛒 [GOOGLE LOGIN] Prompt notification:', notification);
+                        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                            console.error('🛒 [GOOGLE LOGIN] Google Sign-In prompt not displayed:', notification);
+                            alert('Unable to display Google Sign-In. This might be due to:\n1. Authorized JavaScript origins not configured in Google Cloud Console\n2. Client ID not matching your domain\n3. Browser blocking the popup\n\nPlease check Google Cloud Console settings.');
+                        }
+                    });
+                } catch (error) {
+                    console.error('🛒 [GOOGLE LOGIN] Error:', error);
+                    alert('Error initializing Google Sign-In: ' + error.message);
+                }
+            });
+        }
+    }
     
     // Handle Google Sign-In callback
     async function handleGoogleSignIn(response) {

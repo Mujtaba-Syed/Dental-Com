@@ -165,7 +165,7 @@
 	<!-- Django config -->
 	<script>
 		window.DJANGO_CONFIG = {
-			BASE_URL: '{{ API_BASE_URL }}'
+			BASE_URL: '{{ API_BASE_URL|default:"/api/" }}'
 		};
 	</script>
 	<!-- news js -->

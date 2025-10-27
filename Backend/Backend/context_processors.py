@@ -7,4 +7,5 @@ def api_config(request):
     return {
         'API_BASE_URL': settings.API_BASE_URL,
         'BASE_URL': settings.BASE_URL,
+        'GOOGLE_CLIENT_ID': settings.GOOGLE_OAUTH_CLIENT_ID,
     }

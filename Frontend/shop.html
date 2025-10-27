@@ -222,7 +222,17 @@
 	</div>
 
 	<!-- Google Sign In Script -->
-	<script src="https://accounts.google.com/gsi/client" async defer></script>
+	<script src="https://accounts.google.com/gsi/client?onload=onGoogleSignInLoad" async defer></script>
+	<script>
+		// Callback when Google Sign-In library loads
+		window.onGoogleSignInLoad = function() {
+			console.log('🔐 [SETUP] Google Sign-In library loaded');
+			console.log('🔐 [SETUP] Current origin:', window.location.origin);
+			console.log('🔐 [SETUP] Protocol:', window.location.protocol);
+			console.log('🔐 [SETUP] Host:', window.location.host);
+			console.log('🔐 [SETUP] Full URL:', window.location.href);
+		};
+	</script>
 
 	<!-- footer -->
 	{% include 'Includes/footer.html' %}
@@ -257,6 +267,10 @@
 		// Product data from Django backend
 		const products = JSON.parse(document.getElementById('products-data').textContent);
 		console.log('Products loaded:', products);
+		
+		// Google OAuth Client ID from Django
+		window.GOOGLE_CLIENT_ID = '{{ GOOGLE_CLIENT_ID|default:"" }}';
+		console.log('🔐 [SETUP] Google Client ID:', window.GOOGLE_CLIENT_ID ? window.GOOGLE_CLIENT_ID : 'NOT CONFIGURED');
 	</script>
 	<script src="{% static 'js/shop.js' %}"></script>
 

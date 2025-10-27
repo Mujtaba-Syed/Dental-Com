@@ -52,7 +52,12 @@ function addCardHeightStyles() {
 }
 
 // Get BASE_URL from Django template variable or use default
-const BASE_URL = window.DJANGO_CONFIG?.BASE_URL || 'http://127.0.0.1:8000/api/';
+// Use relative URL to avoid CORS issues since frontend and backend are on same domain
+// Fallback to '/api/' if not properly set
+const BASE_URL = (window.DJANGO_CONFIG?.BASE_URL && !window.DJANGO_CONFIG.BASE_URL.includes('{{')) 
+    ? window.DJANGO_CONFIG.BASE_URL 
+    : '/api/';
+console.log('BASE_URL:', BASE_URL);
 // News dynamic rendering functionality using template-based approach
 document.addEventListener('DOMContentLoaded', function() {
     console.log('News.js loaded and DOM ready');
